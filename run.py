@@ -14,7 +14,7 @@ mako = MakoTemplates(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html', name='mako')
+    return render_template('index-private.html', name='mako')
 
 
 
