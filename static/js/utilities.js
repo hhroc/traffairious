@@ -1,4 +1,4 @@
-function csvToObject(my2dArray) {
+function ArrayToObject(my2dArray) {
 	var myObject = {};
 	//Populate object with column names as properties
 	for(var y = 0; y < my2dArray[0].length; y++) 

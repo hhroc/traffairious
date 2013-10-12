@@ -1,4 +1,5 @@
-var directionsService = new google.maps.DirectionsService();
+var directionsService = new google.maps.DirectionsService(),
+    map;
 
 function initialize() {
     var mapOptions = {
@@ -6,23 +7,16 @@ function initialize() {
         center: new google.maps.LatLng(-34.397, 150.644),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-    var start = 'PENFIELD RD ROCHESTER NY',
-        end = 'DALE RD ROCHESTER NY',
-        start2 = 'CLOVER ST ROCHESTER NY',
-        end2 = 'ALLENS CREEK ROCHESTER NY';
-
-    displayDirections(map, start, end);
-    displayDirections(map, start2, end2);
-
-    getCSV('static/data/')
+    getCSV('static/data/Highway-Inventory-Monroe\ County-50Kplus.csv');
 }
 
-function displayDirections(map, start, end) {
+function displayDirections(map, start, end, color) {
+    color = color || '#FF0000'
     var polylineOptionsActual = {
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
+        strokeColor: color,
+        strokeOpacity: 0.5,
         strokeWeight: 5
     };
 
@@ -40,23 +34,37 @@ function displayDirections(map, start, end) {
     }
 
     directionsService.route(request, function (result, status) {
-        console.log('status: ', status)
         if (status == google.maps.DirectionsStatus.OK) {
-            console.log('OK');
             directionsDisplay.setDirections(result);
         }
     }); 
 }
 
-function getCSV(filename) {
-    var csvFile = new XMLHttpRequest();
-    csvFile.open("GET", filename, true);
-    csvFile.onreadystatechange = function()
-    {
-        var allText = csvFile.responseText;
-        var csv = CSVToArray(allText)
-        console.log(csv);
+function drawRoads(object) {
+    for (var i = 0; i < object.AADT.length; i++) {
+        var start = object.From[i],
+            end = object.To[i];
+        if (start != '' && end != '') {
+            console.log(start + ' --- ' + end);
+            start = start + ' ROCHESTER, NY';
+            end = end + ' ROCHESTER, NY';
+            displayDirections(map, start, end);
+        };
     };
+}
+
+function getCSV(filename) {
+    $.ajax({
+        type: "GET",
+        Accept : "text/csv; charset=utf-8",
+        "Content-Type": "text/csv; charset=utf-8",
+        url: filename,
+        success: function (data) {
+            var object = ArrayToObject(CSVToArray(data, "\t"));
+            console.log(object);
+            drawRoads(object);
+        }
+    })
 }
 
 
