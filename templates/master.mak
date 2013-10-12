@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>${self.title()}</title>
+    <title>Traffairious</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Traffairious" />
     <meta name="author" content="RemyD" />
@@ -24,7 +24,7 @@
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">${course['name']}@${course['place']}</a>
+        <a class="navbar-brand" href="/">link</a>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -53,12 +53,11 @@
         <div class="col-md-3">
           <div class="well">
             <ul class="list-unstyled">
-              <li><span class="glyphicon glyphicon-calendar"></span> ${course['dates']}</li>
-              <li><span class="glyphicon glyphicon-bell"></span> ${course['times']}</li>
-              <li><span class="glyphicon glyphicon-shopping-cart"></span> ${course['course']}</li>
-              <li><span class="glyphicon glyphicon-map-marker"></span> ${course['location']}</li>
+              <li><span class="glyphicon glyphicon-calendar"></span></li>
+              <li><span class="glyphicon glyphicon-bell"></span></li>
+              <li><span class="glyphicon glyphicon-shopping-cart"></span></li>
+              <li><span class="glyphicon glyphicon-map-marker"></span> </li>
               <li><span class="glyphicon glyphicon-envelope"></span>
-                <a href="mailto:${instructor['email']}">${instructor['email']}</a>
               </li>
             </ul>
           </div>
@@ -83,5 +82,3 @@
 
   </body>
 </html>
-
-<%def name="title()">${course['name']}@${course['place']}</%def>
