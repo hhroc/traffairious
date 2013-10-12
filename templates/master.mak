@@ -24,7 +24,7 @@
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">link</a>
+        <a class="navbar-brand" href="/">HOME</a>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -33,21 +33,18 @@
       </div>
       <div class="navbar-collapse collapse">
         <p class="navbar-text pull-right">
-          Fork me on <a target="_blank" href="http://github.com/decause/hflossk" class="navbar-link">Github</a>
+          Fork me on <a target="_blank" href="http://github.com/HHROC/traffairious" class="navbar-link">Github</a>
         </p>
         <ul class="nav navbar-nav">
           <li><a href="/about">About</a></li>
-          <li><a href="/syllabus">Syllabus</a></li>
-          <li><a href="/oer">Resources</a></li>
-          <li><a href="/lectures">Lectures</a></li>
-          <li><a href="/hw">Assignments</a></li>
-          <li><a href="/decause">Instructor</a></li>
-          <li><a href="/checkblogs">Participants</a></li>
+          <li><a href="/story">The Story</a></li>
+          <li><a href="/Resources">Resources</a></li>
           <li><a target="_blank" href="http://webchat.freenode.net/?&amp;channels=rit-foss">Instant IRC</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </nav>
 
+    <!--
     <div class="container">
       <div class="row">
         <div class="col-md-3">
@@ -60,9 +57,10 @@
               <li><span class="glyphicon glyphicon-envelope"></span>
               </li>
             </ul>
+        -->
           </div>
         </div><!--/span-->
-        <div class='col-md-9'>
+        <div class='col-md-12'>
           ${self.body()}
         </div>
       </div><!--/row-->
