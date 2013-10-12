@@ -17,6 +17,11 @@ def index():
     return render_template('index-private.html', name='mako')
 
 
+@app.route('/about')
+def about():
+    return render_template('about.mak', name='mako')
+
+
 
 if __name__ == "__main__":
     if 'OPENSHIFT_PYTHON_IP' in os.environ:
