@@ -48,10 +48,19 @@ function getSchools(filename) {
 function plotSchools(data) {
     for (var i = 0; i < data.GDTLONG.length; i++) {
         //var pos = new google.maps.LatLng(lat, lng);
+        var infoWindow = new google.maps.InfoWindow({
+            content: '<div id="content">'+
+          '<h1 id="firstHeading" class="firstHeading" style="font-size: 26px;">'+data.NAME[i]+'</h1>'+
+          '<div id="bodyContent">'+
+          '<p>' + data.STREET[i] + ', ' + data.CITY[i] + ', ' + data.STATE[i] + '</p>' +
+          '</div>'+
+          '</div>'
+        });
         map.addMarker({
             lat: data.GDTLAT[i],
             lng: data.GDTLONG[i],
-            title: data.NAME[i]
+            title: data.NAME[i],
+            infoWindow: infoWindow
         });
         /*var marker = new google.maps.Marker({
             'map': map,
@@ -191,7 +200,7 @@ function drawRoadsFromFile() {
               path: path,
               strokeColor: 'rgb(' + r + ',0,' + b + ')',
               strokeOpacity: 0.6,
-              strokeWeight: 6
+              strokeWeight: 8
             });
         }
     });
