@@ -3,8 +3,10 @@ var directionsService = new google.maps.DirectionsService(),
     start,
     end,
     json = {'calls': []},
-    total = 0;
+    total = 0,
+    aadt = [52800, 54100, 54100, 54400, 54600, 57200, 57200, 57300, 60000, 61100, 61100, 62700, 62700, 62700, 64900, 64900, 65100, 65100, 65600, 71300, 71500, 75300, 75700, 75700, 75700, 75700, 75700, 75700, 76600, 76700, 76700, 76700, 80300, 80300, 82100, 83400, 83700, 83700, 84200, 84500, 85000, 85400, 86900, 88000, 92500, 94400, 94400, 94400, 95700, 95700, 98800, 99600, 99600, 99700, 99700, 99700, 104400, 109600, 134100, 134100, 134100, 134100];
 
+aadt = convertNumbers(aadt, 52800, 134100);
 function initialize() {
     getSchools('static/data/schools_all_NY.csv');
     var mapOptions = {
@@ -141,8 +143,9 @@ function getCSV(filename) {
         success: function (data) {
             var object = ArrayToObject(CSVToArray(data, "\t"));
             drawRoadsFromFile();
+            drawRoads2(object);
         }
-    })
+    });
 }
 
 function getCSV2(filename) {
@@ -174,13 +177,19 @@ function drawRoadsFromFile() {
         for (var i = 0; i < data.calls.length; i++) {
             var call = data.calls[i],
                 path = [];
+            if(call.routes[0] == undefined || call.routes[0].overview_path == undefined) {
+                continue;
+            }
+            console.log('dsag');
             for (var j = 0; j < call.routes[0].overview_path.length; j++) {
                 var step = call.routes[0].overview_path[j];
                 path.push([step.lb, step.mb]);
             }
+            r = aadt[i];
+            b = 255 - aadt[i];
             map.drawPolyline({
               path: path,
-              strokeColor: '#131540',
+              strokeColor: 'rgb(' + r + ',0,' + b + ')',
               strokeOpacity: 0.6,
               strokeWeight: 6
             });
@@ -206,6 +215,22 @@ function drawRoads(object) {
     }// end for
 }
 
+function drawRoads2(object) {
+    console.log(object);
+    var x = 0;
+    for (var i = 0; i < object.AADT.length; i++) {
+        start = object.From[x];
+        end = object.To[x];
+        if (start != '' && end != '') {
+            object.From[x] = start + ' ROCHESTER, NY';
+            object.To[x] = end + ' ROCHESTER, NY';
+            json.calls.push(object.AADT[i]);
+            total++;
+            console.log(total);
+        }//end if
+        x++;
+    }// end for
+}
 
 
 window.onload = initialize;
