@@ -9,13 +9,15 @@ function ArrayToObject(my2dArray) {
 	var col = 0;
 	for(var property in myObject) 
 	{
-		for(var x = 1; x < my2dArray[0].length; x++) 
+		for(var x = 1; x < my2dArray.length; x++) 
 		{
 			myObject[property].push(my2dArray[x][col]);
 		}
 		col++;
 	}
 	return myObject;
+
+
 }
 
 // This will parse a delimited string into an array of
