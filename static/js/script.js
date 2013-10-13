@@ -6,6 +6,7 @@ var directionsService = new google.maps.DirectionsService(),
     total = 0;
 
 function initialize() {
+    getSchools('static/data/schools_all_NY.csv');
     var mapOptions = {
         div: '#map-canvas',
         lat: 43.1572899, 
@@ -25,7 +26,7 @@ function initialize2() {
         center: home
     }
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    //getCSV2('static/data/Highway-Inventory-Monroe\ County-50Kplus.csv');
+    getCSV2('static/data/Highway-Inventory-Monroe\ County-50Kplus.csv');
 }
 
 function getSchools(filename) {
@@ -44,17 +45,20 @@ function getSchools(filename) {
 
 function plotSchools(data) {
     for (var i = 0; i < data.GDTLONG.length; i++) {
-        var lat = data.GDTLAT[i],
-            lng = data.GDTLONG[i];
-        var pos = new google.maps.LatLng(lat, lng);
-        var marker = new google.maps.Marker({
+        //var pos = new google.maps.LatLng(lat, lng);
+        map.addMarker({
+            lat: data.GDTLAT[i],
+            lng: data.GDTLONG[i],
+            title: data.NAME[i]
+        });
+        /*var marker = new google.maps.Marker({
             'map': map,
             position: pos,
             animation: false,
             clickable: true,
             title: data.NAME[i],
             flat: true
-        });
+        });*/
     };
     
 }
@@ -170,14 +174,10 @@ function drawRoadsFromFile() {
         for (var i = 0; i < data.calls.length; i++) {
             var call = data.calls[i],
                 path = [];
-            console.log(call);
-            for (var j = 0; j < call.routes[0].legs[0].steps.length; j++) {
-                console.log(call.routes[0].legs[0].steps[j].start_location);
-                var step = call.routes[0].legs[0].steps[j].start_location;
+            for (var j = 0; j < call.routes[0].overview_path.length; j++) {
+                var step = call.routes[0].overview_path[j];
                 path.push([step.lb, step.mb]);
             }
-            var last = call.routes[0].legs[0].steps[call.routes[0].legs[0].steps.length - 1].end_location;
-            path.push([last.lb, last.mb]);
             map.drawPolyline({
               path: path,
               strokeColor: '#131540',
@@ -208,4 +208,4 @@ function drawRoads(object) {
 
 
 
-window.onload = initialize2;
+window.onload = initialize;
