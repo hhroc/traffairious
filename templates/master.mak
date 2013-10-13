@@ -38,8 +38,7 @@
         <ul class="nav navbar-nav">
           <li><a href="/about">About</a></li>
           <li><a href="/story">The Story</a></li>
-          <li><a href="/Resources">Resources</a></li>
-          <li><a target="_blank" href="http://webchat.freenode.net/?&amp;channels=rit-foss">Instant IRC</a></li>
+          <li><a target="_blank" href="http://www.meetup.com/HackshackersROC">HHROC</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </nav>
