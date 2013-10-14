@@ -8,11 +8,15 @@ var directionsService = new google.maps.DirectionsService(),
 
 aadt = convertNumbers(aadt, 52800, 134100);
 function initialize() {
+    var winHeight = $(window).height() - $('.navbar').height() - 20;
+    console.log(winHeight);
+    $('.mapbox').height(winHeight);;
     getSchools('static/data/schools_all_NY.csv');
     var mapOptions = {
         div: '#map-canvas',
         lat: 43.1572899, 
-        lng: -77.6230846
+        lng: -77.6230846,
+        zoom: 13
     }
     map = new GMaps(mapOptions);
 
