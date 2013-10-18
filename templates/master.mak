@@ -63,12 +63,6 @@
           ${self.body()}
         </div>
       </div><!--/row-->
-
-      <hr />
-
-      <footer>
-      </footer>
-
     </div><!--/.fluid-container-->
 
     <!-- Le javascript
