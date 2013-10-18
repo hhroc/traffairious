@@ -1,0 +1,6 @@
+https://www.crimereports.com/services/crimedata/crime_list.html/${start_date}/${end_date}/${event_ids}/${latitude_large}/${latitude_small}/${longitude_large}/${longitude_small}/?limit=false
+
+Event ids
+---------
+100: Breaking & Entering
+104,98,103,99,149
