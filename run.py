@@ -13,9 +13,14 @@ app = Flask(__name__)
 app.template_folder = "templates"
 mako = MakoTemplates(app)
 
+base_dir = os.path.split(__file__)[0]
+with open(os.path.join(base_dir, 'api_key')) as key_file:
+    api_key = key_file.read()
+
+
 @app.route('/')
 def index():
-    return render_template('index-private.html', name='mako')
+    return render_template('index.mak', name='mako', api_key=api_key)
 
 
 @app.route('/about')

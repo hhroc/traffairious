@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Traffairious</title>
+    <title>${self.title()}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Traffairious" />
     <meta name="author" content="RemyD" />
@@ -43,22 +43,8 @@
       </div><!--/.nav-collapse -->
     </nav>
 
-    <!--
     <div class="container">
       <div class="row">
-        <div class="col-md-3">
-          <div class="well">
-            <ul class="list-unstyled">
-              <li><span class="glyphicon glyphicon-calendar"></span></li>
-              <li><span class="glyphicon glyphicon-bell"></span></li>
-              <li><span class="glyphicon glyphicon-shopping-cart"></span></li>
-              <li><span class="glyphicon glyphicon-map-marker"></span> </li>
-              <li><span class="glyphicon glyphicon-envelope"></span>
-              </li>
-            </ul>
-        -->
-          </div>
-        </div><!--/span-->
         <div class='col-md-12'>
           ${self.body()}
         </div>
@@ -70,6 +56,11 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <!-- Page-specific scripts -->
+    ${self.scripts()}
 
   </body>
 </html>
+
+<%def name="title()">Traffairious</%def>
+<%def name="scripts()"></%def>
