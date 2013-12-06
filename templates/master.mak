@@ -7,11 +7,16 @@
     <meta name="description" content="Traffairious" />
     <meta name="author" content="RemyD" />
 
+    <script src="/static/js/pace.min.js"></script>
+
+
     <!-- Le styles -->
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/static/css/site.css" rel="stylesheet" />
+    <link href="/static/css/pace-theme-bounce.css" rel="stylesheet" />
+    <link href="/static/css/pace.css" rel="stylesheet" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
