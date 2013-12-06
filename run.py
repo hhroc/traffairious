@@ -7,11 +7,13 @@ import os
 
 from flask import Flask
 from flask.ext.mako import MakoTemplates, render_template
+from flask.ext.compress import Compress
 from flask import redirect, url_for
 
 app = Flask(__name__)
 app.template_folder = "templates"
 mako = MakoTemplates(app)
+Compress(app)
 
 base_dir = os.path.split(__file__)[0]
 with open(os.path.join(base_dir, 'api_key')) as key_file:
