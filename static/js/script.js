@@ -24,3 +24,6 @@ $.getJSON('static/data/nys_counties.json', function (data) {
 
     }).addTo(map);
 });
+
+
+//name.tolower().replace(' ','_') + "_towns.json"
