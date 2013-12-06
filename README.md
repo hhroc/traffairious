@@ -20,6 +20,17 @@ Demo, Story, &amp; Code
 - You can also find our presentation embedded within the website as well at: http://traffairious-facts.rhcloud.com/story
 - You can find our sourcecode on Github Here: https://github.com/hhroc/traffairious
 
+Setup
+---
+
+Install the dependencies with
+
+    python setup.py install
+    
+and then run traffairious with
+
+    python run.py
+
 License
 ---
 This project is released under the Apache 2.0 License:
