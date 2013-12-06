@@ -27,6 +27,7 @@ setup(
         "flask",
         "mako",
         "flask-mako",
+        "flask-compress",
     ],
     #TODO: Deal with entry_points
     #entry_points="""
