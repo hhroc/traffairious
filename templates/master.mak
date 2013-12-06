@@ -8,6 +8,7 @@
     <meta name="author" content="RemyD" />
 
     <!-- Le styles -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/static/css/site.css" rel="stylesheet" />
 
@@ -43,13 +44,7 @@
       </div><!--/.nav-collapse -->
     </nav>
 
-    <div class="container">
-      <div class="row">
-        <div class='col-md-12'>
-          ${self.body()}
-        </div>
-      </div><!--/row-->
-    </div><!--/.fluid-container-->
+    ${self.body()}
 
     <!-- Le javascript
     ================================================== -->
