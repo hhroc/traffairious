@@ -1,6 +1,7 @@
 var map_container = document.getElementById('map-canvas'),
     counties = null,
-    current_towns = null;
+    current_towns = null, 
+    old_counties = [];
 
 
 
@@ -35,32 +36,39 @@ function displayCounties() {
 }
 
 function loadCounties() {
-    $.getJSON('static/data/nys_counties.json', function (data) {
-        L.geoJson(data, {
-            style: function (feature) {
-                return {fillColor: 'blue', color: 'white', opacity: 1, fillOpacity: 0.4};
-            },
-            onEachFeature: function (feature, layer) {
-                counties.addLayer(layer);
-                layer.on('click', function (event) {
-                    var url = 'static/data/counties/' + feature.properties.NAMELSAD.toLowerCase().replace(' ','_') + "_towns.json";
-                    $.getJSON(url, function (data) {
-                        loadTowns(data, layer);
+    if (old_counties.length != 0) {
+        for(var county in old_counties) {
+            map.addLayer(old_counties[county]);
+        }
+    } else {
+        $.getJSON('static/data/nys_counties.json', function (data) {
+            L.geoJson(data, {
+                style: function (feature) {
+                    return {fillColor: 'blue', color: 'white', opacity: 1, fillOpacity: 0.4};
+                },
+                onEachFeature: function (feature, layer) {
+                    counties.addLayer(layer);
+                    layer.on('click', function (event) {
+                        var url = 'static/data/counties/' + feature.properties.NAMELSAD.toLowerCase().replace(' ','_') + "_towns.json";
+                        $.getJSON(url, function (data) {
+                            loadTowns(data, layer);
+                        });
                     });
-                });
-                layer.on('mouseover', function (event) {
-                    layer.setStyle({ fillColor: 'red' });
-                    $('#ui-id-1').text('Traffairious - ' + feature.properties.NAMELSAD);
-                });
-                layer.on('mouseout', function (event) {
-                    layer.setStyle({ fillColor: 'blue' });
-                });
-            },
-        }).addTo(map);
-    });
+                    layer.on('mouseover', function (event) {
+                        layer.setStyle({ fillColor: 'red' });
+                        $('#ui-id-1').text('Traffairious - ' + feature.properties.NAMELSAD);
+                    });
+                    layer.on('mouseout', function (event) {
+                        layer.setStyle({ fillColor: 'blue' });
+                    });
+                },
+            }).addTo(map);
+        });
+    }
 }
 
 function loadTowns (data, county) {
+    old_counties = [];
     $('#go-back').show();
     var index = -1;
     for(var i=0; i < data.features.length; i++) {
@@ -74,21 +82,16 @@ function loadTowns (data, county) {
     }
 
     for(var county in counties._layers) {
+        old_counties.push(counties._layers[county]);
         map.removeLayer(counties._layers[county]);
     }
 
     L.geoJson(data, {
         style: function (feature) {
-            return {fillColor: 'blue', color: 'white', opacity: 1, fillOpacity: 0.4};
+            return {color: 'red', opacity: 1, fillOpacity: 0};
         },
         onEachFeature: function (feature, layer) {
             current_towns.addLayer(layer);
-            layer.on('mouseover', function (event) {
-                layer.setStyle({ fillColor: 'red' });
-            });
-            layer.on('mouseout', function (event) {
-                layer.setStyle({ fillColor: 'blue' });
-            });
         },
     }).addTo(map);
 }
