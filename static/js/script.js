@@ -1,7 +1,8 @@
 var map_container = document.getElementById('map-canvas'),
     counties = null,
     current_towns = null, 
-    old_counties = [];
+    old_counties = [],
+    town_schools = [];
 
 
 
@@ -40,6 +41,10 @@ function loadCounties() {
         for(var county in old_counties) {
             map.addLayer(old_counties[county]);
         }
+
+        for(var marker in town_schools) {
+            map.removeLayer(town_schools[marker]);
+        }
     } else {
         $.getJSON('static/data/nys_counties.json', function (data) {
             L.geoJson(data, {
@@ -49,9 +54,13 @@ function loadCounties() {
                 onEachFeature: function (feature, layer) {
                     counties.addLayer(layer);
                     layer.on('click', function (event) {
-                        var url = 'static/data/counties/' + feature.properties.NAMELSAD.toLowerCase().replace(' ','_') + "_towns.json";
-                        $.getJSON(url, function (data) {
+                        var county_url = 'static/data/counties/' + feature.properties.NAMELSAD.toLowerCase().replace(' ','_') + "_towns.json",
+                            school_url = 'static/data/schools/'  + feature.properties.NAMELSAD.toLowerCase().replace(' ','_') + ".json";
+                        $.getJSON(county_url, function (data) {
                             loadTowns(data, layer);
+                        });
+                        $.getJSON(school_url, function (data) {
+                            loadSchools(data, layer);
                         });
                     });
                     layer.on('mouseover', function (event) {
@@ -65,6 +74,25 @@ function loadCounties() {
             }).addTo(map);
         });
     }
+}
+
+function loadSchools(schools, layer) {
+    schools.forEach(function (school) {
+        school_marker = L.marker([school.GDTLAT, school.GDTLONG]).addTo(map);
+        school_marker.info = school;
+        school_marker.on('click', function (event) {
+            var info = event.target.info;
+            console.log(info);
+            $('#dialog').empty();
+            $('#dialog').append('<h2>' + info.NAME + '</h2>');
+            var address = [info.STREET, info.CITY, info.STATE, info.ZIP5].join(' ');
+            $('#dialog').append('<h4>' + address + '</h4>');
+            $('#dialog').append('<p>' + info['agency_name_public_school_2010_11'] + '</p>');
+            $('#dialog').append('<button id="go-back" onclick="displayCounties()">Back</button>');
+        });
+        town_schools.push(school_marker);
+
+    });
 }
 
 function loadTowns (data, county) {
