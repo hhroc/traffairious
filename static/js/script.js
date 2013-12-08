@@ -1,6 +1,6 @@
 var map_container = document.getElementById('map-canvas'),
     counties = null,
-    current_towns = null, 
+    current_towns = null,
     old_counties = [],
     town_schools = [];
 
@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('#go-back').hide();
     var main = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data © OpenStreetMap contributors',
-                minZoom: 5, 
+                minZoom: 5,
                 maxZoom: 18,
             });
         counties = L.layerGroup(),
@@ -96,12 +96,18 @@ function loadSchools(schools, layer) {
             // <ul> - creates list
             // <li> - list item
             // info['key']
-            
+            $('#dialog').append('Enrollment');
+            $('#dialog').append('<ul>');
+            for (var i = 1; i < 13; i++){
+                if (info['grade_' + i + '_enroll']){
+                    $('#dialog').append('<li>' + 'Grade ' + i + ': ' + info['grade_' + i + '_enroll'] + '</li>');
+                }
+            }
+            $('#dialog').append('</ul>');
 
             $('#dialog').append('<button id="go-back" onclick="displayCounties()">Back</button>');
         });
         town_schools.push(school_marker);
-
     });
 }
 
