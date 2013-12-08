@@ -95,18 +95,11 @@ function loadSchools(schools, layer) {
             // info['key']
             $('#dialog').append('Enrollment');
             $('#dialog').append('<ul>');
-            $('#dialog').append('<li>' + 'Grade 1: ' + info['grade_1_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 2: ' + info['grade_2_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 3: ' + info['grade_3_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 4: ' + info['grade_4_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 5: ' + info['grade_5_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 6: ' + info['grade_6_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 7: ' + info['grade_7_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 8: ' + info['grade_8_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 9: ' + info['grade_9_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 10: ' + info['grade_10_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 11: ' + info['grade_11_enroll'] + '</li>');
-            $('#dialog').append('<li>' + 'Grade 12: ' + info['grade_12_enroll'] + '</li>');
+            for (var i = 1; i < 13; i++){
+                if (info['grade_' + i + '_enroll']){
+                    $('#dialog').append('<li>' + 'Grade ' + i + ': ' + info['grade_' + i + '_enroll'] + '</li>');
+                }
+            }
             $('#dialog').append('</ul>');
 
             $('#dialog').append('<button id="go-back" onclick="displayCounties()">Back</button>');
