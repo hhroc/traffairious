@@ -88,6 +88,13 @@ function loadSchools(schools, layer) {
             var address = [info.STREET, info.CITY, info.STATE, info.ZIP5].join(' ');
             $('#dialog').append('<h4>' + address + '</h4>');
             $('#dialog').append('<p>' + info['agency_name_public_school_2010_11'] + '</p>');
+
+            //TODO: Read in list of grads and list them
+            // <ul> - creates list
+            // <li> - list item
+            // info['key']
+            
+
             $('#dialog').append('<button id="go-back" onclick="displayCounties()">Back</button>');
         });
         town_schools.push(school_marker);
