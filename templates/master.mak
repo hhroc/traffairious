@@ -12,7 +12,6 @@
 
     <!-- Le styles -->
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/static/css/site.css" rel="stylesheet" />
     <link href="/static/css/pace-theme-bounce.css" rel="stylesheet" />
