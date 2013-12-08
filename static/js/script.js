@@ -1,6 +1,6 @@
 var map_container = document.getElementById('map-canvas'),
     counties = null,
-    current_towns = null, 
+    current_towns = null,
     old_counties = [],
     town_schools = [];
 
@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('#go-back').hide();
     var main = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data © OpenStreetMap contributors',
-                minZoom: 5, 
+                minZoom: 5,
                 maxZoom: 18,
             });
         counties = L.layerGroup(),
@@ -93,12 +93,25 @@ function loadSchools(schools, layer) {
             // <ul> - creates list
             // <li> - list item
             // info['key']
-            
+            $('#dialog').append('Enrollment');
+            $('#dialog').append('<ul>');
+            $('#dialog').append('<li>' + 'Grade 1: ' + info['grade_1_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 2: ' + info['grade_2_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 3: ' + info['grade_3_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 4: ' + info['grade_4_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 5: ' + info['grade_5_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 6: ' + info['grade_6_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 7: ' + info['grade_7_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 8: ' + info['grade_8_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 9: ' + info['grade_9_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 10: ' + info['grade_10_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 11: ' + info['grade_11_enroll'] + '</li>');
+            $('#dialog').append('<li>' + 'Grade 12: ' + info['grade_12_enroll'] + '</li>');
+            $('#dialog').append('</ul>');
 
             $('#dialog').append('<button id="go-back" onclick="displayCounties()">Back</button>');
         });
         town_schools.push(school_marker);
-
     });
 }
 
