@@ -149,24 +149,28 @@ function loadTowns (data, county) {
 
 function handleRoutes () {
     $.getJSON('static/data/routes.json', function (data) {
-        data.forEach(function (route) {
-            window.result = [];
+        //data.forEach(function (route) {
+            var route = data[1];
+            var result = [];
             var coords = decompress(route.location, 6);
             if (coords.length > 10) {
                 len = 10;
             } else {
                 len = coords.length;
             }
+            var last = null;
             for (var i = 0; i < len; i += 2) {
                 var lat = coords[i],
                     lng = coords[i + 1];
-                console.log(lat, lng);
-                var c = L.latLng([lat, lng]);
-                result.push(c);
+                var c = new L.latLng([lat, lng]);
+                if(last != null) {
+                    result.push([last, c]);
+                } else {
+                    last = c;
+                }
             };
-            var a = L.multiPolyline(result, {color: 'red', weight: 15}).addTo(map);
-            console.log(result.length);
-        });
+            window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
+        //});
     });
 }
 
