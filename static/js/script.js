@@ -17,8 +17,8 @@ $(document).ready(function () {
         current_towns = L.layerGroup();
 
     window.map = L.map('map-canvas', {
-        center: [43.1850, -77.6115],
-        zoom: 10,
+        center: [42.6501, -76.3659],
+        zoom: 7,
         layers: [
             main
          ]
@@ -26,7 +26,6 @@ $(document).ready(function () {
 
     displayCounties();
 
-    $( "#dialog" ).dialog( {width: 400, height: $(window).height()*.9, position: { my: "right", at: "right", of: window } } );
 });
 
 function displayCounties() {
@@ -37,6 +36,10 @@ function displayCounties() {
 }
 
 function loadCounties() {
+    map.setZoom(7);
+    window.setTimeout(function () {
+        map.panTo([42.6501, -76.3659]);
+    }, 800);
     if (old_counties.length != 0) {
         for(var county in old_counties) {
             map.addLayer(old_counties[county]);
@@ -65,7 +68,7 @@ function loadCounties() {
                     });
                     layer.on('mouseover', function (event) {
                         layer.setStyle({ fillColor: 'red' });
-                        $('#ui-id-1').text('Traffairious - ' + feature.properties.NAMELSAD);
+                        $('#title').text('Traffairious - ' + feature.properties.NAMELSAD);
                     });
                     layer.on('mouseout', function (event) {
                         layer.setStyle({ fillColor: 'blue' });
