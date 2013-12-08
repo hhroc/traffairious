@@ -1,6 +1,6 @@
 var map_container = document.getElementById('map-canvas'),
     counties = null,
-    current_towns = null, 
+    current_towns = null,
     old_counties = [],
     town_schools = [];
 
@@ -10,15 +10,15 @@ $(document).ready(function () {
     $('#go-back').hide();
     var main = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data © OpenStreetMap contributors',
-                minZoom: 5, 
+                minZoom: 5,
                 maxZoom: 18,
             });
         counties = L.layerGroup(),
         current_towns = L.layerGroup();
 
     window.map = L.map('map-canvas', {
-        center: [43.1850, -77.6115],
-        zoom: 10,
+        center: [42.6501, -76.3659],
+        zoom: 7,
         layers: [
             main
          ]
@@ -26,7 +26,6 @@ $(document).ready(function () {
 
     displayCounties();
 
-    $( "#dialog" ).dialog( {width: 400, height: $(window).height()*.9, position: { my: "right", at: "right", of: window } } );
 });
 
 function displayCounties() {
@@ -37,6 +36,10 @@ function displayCounties() {
 }
 
 function loadCounties() {
+    map.setZoom(7);
+    window.setTimeout(function () {
+        map.panTo([42.6501, -76.3659]);
+    }, 800);
     if (old_counties.length != 0) {
         for(var county in old_counties) {
             map.addLayer(old_counties[county]);
@@ -54,8 +57,14 @@ function loadCounties() {
                 onEachFeature: function (feature, layer) {
                     counties.addLayer(layer);
                     layer.on('click', function (event) {
-                        var county_url = 'static/data/counties/' + feature.properties.NAMELSAD.toLowerCase().replace(' ','_') + "_towns.json",
-                            school_url = 'static/data/schools/'  + feature.properties.NAMELSAD.toLowerCase().replace(' ','_') + ".json";
+                        window.setTimeout(function () {
+                            map.setZoom(10);
+                        }, 800);
+                        map.panTo([event.latlng.lat, event.latlng.lng]);
+                        console.log(event);
+                        var name = feature.properties.NAMELSAD.toLowerCase().trim().replace(/\s/g,'_').replace('.', '');
+                        var county_url = 'static/data/counties/' + name + "_towns.json",
+                            school_url = 'static/data/schools/'  + name + ".json";
                         $.getJSON(county_url, function (data) {
                             loadTowns(data, layer);
                         });
@@ -65,7 +74,7 @@ function loadCounties() {
                     });
                     layer.on('mouseover', function (event) {
                         layer.setStyle({ fillColor: 'red' });
-                        $('#ui-id-1').text('Traffairious - ' + feature.properties.NAMELSAD);
+                        $('#title').text('Traffairious - ' + feature.properties.NAMELSAD);
                     });
                     layer.on('mouseout', function (event) {
                         layer.setStyle({ fillColor: 'blue' });
@@ -88,10 +97,23 @@ function loadSchools(schools, layer) {
             var address = [info.STREET, info.CITY, info.STATE, info.ZIP5].join(' ');
             $('#dialog').append('<h4>' + address + '</h4>');
             $('#dialog').append('<p>' + info['agency_name_public_school_2010_11'] + '</p>');
+
+            //TODO: Read in list of grads and list them
+            // <ul> - creates list
+            // <li> - list item
+            // info['key']
+            $('#dialog').append('Enrollment');
+            $('#dialog').append('<ul>');
+            for (var i = 1; i < 13; i++){
+                if (info['grade_' + i + '_enroll']){
+                    $('#dialog').append('<li>' + 'Grade ' + i + ': ' + info['grade_' + i + '_enroll'] + '</li>');
+                }
+            }
+            $('#dialog').append('</ul>');
+
             $('#dialog').append('<button id="go-back" onclick="displayCounties()">Back</button>');
         });
         town_schools.push(school_marker);
-
     });
 }
 
