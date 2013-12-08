@@ -57,6 +57,11 @@ function loadCounties() {
                 onEachFeature: function (feature, layer) {
                     counties.addLayer(layer);
                     layer.on('click', function (event) {
+                        window.setTimeout(function () {
+                            map.setZoom(10);
+                        }, 800);
+                        map.panTo([event.latlng.lat, event.latlng.lng]);
+                        console.log(event);
                         var name = feature.properties.NAMELSAD.toLowerCase().trim().replace(/\s/g,'_').replace('.', '');
                         var county_url = 'static/data/counties/' + name + "_towns.json",
                             school_url = 'static/data/schools/'  + name + ".json";
