@@ -7,6 +7,7 @@ var map_container = document.getElementById('map-canvas'),
 
 
 $(document).ready(function () {
+    handleRoutes();
     $('#go-back').hide();
     var main = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data © OpenStreetMap contributors',
@@ -24,7 +25,7 @@ $(document).ready(function () {
          ]
     });
 
-    displayCounties();
+    //displayCounties();
 
 });
 
@@ -146,4 +147,57 @@ function loadTowns (data, county) {
     }).addTo(map);
 }
 
-//name.tolower().replace(' ','_') + "_towns.json"
+function handleRoutes () {
+    $.getJSON('static/data/routes.json', function (data) {
+        //data.forEach(function (route) {
+            var route = data[1];
+            var result = [];
+            var coords = decompress(route.location, 6);
+            if (coords.length > 10) {
+                len = 10;
+            } else {
+                len = coords.length;
+            }
+            var last = null;
+            for (var i = 0; i < len; i += 2) {
+                var lat = coords[i],
+                    lng = coords[i + 1];
+                var c = new L.latLng([lat, lng]);
+                if(last != null) {
+                    result.push([last, c]);
+                } else {
+                    last = c;
+                }
+            };
+            window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
+        //});
+    });
+}
+
+
+function decompress (encoded, precision) {
+   precision = Math.pow(10, -precision);
+   var len = encoded.length, index=0, lat=0, lng = 0, array = [];
+   while (index < len) {
+      var b, shift = 0, result = 0;
+      do {
+         b = encoded.charCodeAt(index++) - 63;
+         result |= (b & 0x1f) << shift;
+         shift += 5;
+      } while (b >= 0x20);
+      var dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+      lat += dlat;
+      shift = 0;
+      result = 0;
+      do {
+         b = encoded.charCodeAt(index++) - 63;
+         result |= (b & 0x1f) << shift;
+         shift += 5;
+      } while (b >= 0x20);
+      var dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+      lng += dlng;
+      array.push(lat * precision);
+      array.push(lng * precision);
+   }
+   return array;
+}
