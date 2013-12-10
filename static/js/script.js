@@ -27,6 +27,8 @@ $(document).ready(function () {
 
     displayCounties();
 
+    $('#modal').modal('show');
+
 });
 
 function displayCounties() {
