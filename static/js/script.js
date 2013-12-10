@@ -104,25 +104,22 @@ function loadSchools(schools, layer) {
             $('#dialog').append('<h5>Numbers</h5>');
 
             var numbers_table = "<table class='table'>";
-    
+
             numbers_table+=('<tr><td width="50%"> Faculty </td> <td> ' + info['number_teachers'] + '</td></tr>');
-            numbers_table+=('<tr><td> Pre-K </td> <td> ' + info['prek_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Kindergarten </td> <td> ' + (info['k_fullday_enroll'] + info['k_halfday_enroll']) + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 1 </td> <td> ' + info['grade_1_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 2 </td> <td> ' + info['grade_2_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 3 </td> <td> ' + info['grade_3_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 4 </td> <td> ' + info['grade_4_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 5 </td> <td> ' + info['grade_5_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 6 </td> <td> ' + info['grade_6_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 7 </td> <td> ' + info['grade_7_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 8 </td> <td> ' + info['grade_8_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 9 </td> <td> ' + info['grade_9_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 10 </td> <td> ' + info['grade_10_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 11 </td> <td> ' + info['grade_11_enroll'] + '</td></tr>');
-            numbers_table+=('<tr><td> Grade 12 </td> <td> ' + info['grade_12_enroll'] + '</td></tr>');
+            if (info['prek_enroll']){
+                numbers_table+=('<tr><td> Pre-K </td> <td> ' + info['prek_enroll'] + '</td></tr>');
+            }
+            if (info['k_fullday_enroll']){
+                numbers_table+=('<tr><td> Kindergarten </td> <td> ' + (info['k_fullday_enroll'] + info['k_halfday_enroll']) + '</td></tr>');
+            }
+            for (x = 1; x < 13; x++){
+                if (info['grade_' + '_enroll']){
+                    numbers_table+=('<tr><td> Grade' + x + ' </td> <td> ' + info['grade_' + x + '_enroll'] + '</td></tr>');
+                }
+            }
             numbers_table+=('</table>');
             $('#dialog').append(numbers_table);
-            
+
             $('#dialog').append('<button class="btn btn-primary" id="go-back" onclick="displayCounties()">Back</button>');
         });
         town_schools.push(school_marker);
