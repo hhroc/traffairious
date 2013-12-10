@@ -94,25 +94,36 @@ function loadSchools(schools, layer) {
             var info = event.target.info;
             console.log(info);
             $('#dialog').empty();
-            $('#dialog').append('<h2>' + info.NAME + '</h2>');
-            var address = [info.STREET, info.CITY, info.STATE, info.ZIP5].join(' ');
-            $('#dialog').append('<h4>' + address + '</h4>');
-            $('#dialog').append('<p>' + info['agency_name_public_school_2010_11'] + '</p>');
+            $('#dialog').append('<h3>' + info.NAME + '</h3><hr>');
+            $('#dialog').append('<h5>Address</h5>');
+            $('#dialog').append('<address>' + info.STREET + '<br>' + info.CITY + ', ' + info.STATE + ' ' + info.ZIP5 + '</address>');
+            $('#dialog').append('<h5>Phone Number</h5>');
+            $('#dialog').append('<p style="margin-bottom:20px">' + String(info['phone_number_public_school_2010_1']).replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3') + '</p>');
+            $('#dialog').append('<h5>School District</h5>');
+            $('#dialog').append('<p style="margin-bottom:20px">' + info['agency_name_public_school_2010_11'] + '</p>');
+            $('#dialog').append('<h5>Numbers</h5>');
 
-            //TODO: Read in list of grads and list them
-            // <ul> - creates list
-            // <li> - list item
-            // info['key']
-            $('#dialog').append('Enrollment');
-            $('#dialog').append('<ul>');
-            for (var i = 1; i < 13; i++){
-                if (info['grade_' + i + '_enroll']){
-                    $('#dialog').append('<li>' + 'Grade ' + i + ': ' + info['grade_' + i + '_enroll'] + '</li>');
-                }
-            }
-            $('#dialog').append('</ul>');
-
-            $('#dialog').append('<button id="go-back" onclick="displayCounties()">Back</button>');
+            var numbers_table = "<table class='table'>";
+    
+            numbers_table+=('<tr><td width="50%"> Faculty </td> <td> ' + info['number_teachers'] + '</td></tr>');
+            numbers_table+=('<tr><td> Pre-K </td> <td> ' + info['prek_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Kindergarten </td> <td> ' + (info['k_fullday_enroll'] + info['k_halfday_enroll']) + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 1 </td> <td> ' + info['grade_1_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 2 </td> <td> ' + info['grade_2_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 3 </td> <td> ' + info['grade_3_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 4 </td> <td> ' + info['grade_4_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 5 </td> <td> ' + info['grade_5_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 6 </td> <td> ' + info['grade_6_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 7 </td> <td> ' + info['grade_7_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 8 </td> <td> ' + info['grade_8_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 9 </td> <td> ' + info['grade_9_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 10 </td> <td> ' + info['grade_10_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 11 </td> <td> ' + info['grade_11_enroll'] + '</td></tr>');
+            numbers_table+=('<tr><td> Grade 12 </td> <td> ' + info['grade_12_enroll'] + '</td></tr>');
+            numbers_table+=('</table>');
+            $('#dialog').append(numbers_table);
+            
+            $('#dialog').append('<button class="btn btn-primary" id="go-back" onclick="displayCounties()">Back</button>');
         });
         town_schools.push(school_marker);
     });
