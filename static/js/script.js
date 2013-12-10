@@ -113,7 +113,7 @@ function loadSchools(schools, layer) {
                 numbers_table+=('<tr><td> Kindergarten </td> <td> ' + (info['k_fullday_enroll'] + info['k_halfday_enroll']) + '</td></tr>');
             }
             for (x = 1; x < 13; x++){
-                if (info['grade_' + '_enroll']){
+                if (info['grade_' + x + '_enroll']){
                     numbers_table+=('<tr><td> Grade' + x + ' </td> <td> ' + info['grade_' + x + '_enroll'] + '</td></tr>');
                 }
             }
