@@ -101,19 +101,20 @@ function loadSchools(schools, layer) {
             $('#dialog').append('<p style="margin-bottom:20px">' + String(info['phone_number_public_school_2010_1']).replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3') + '</p>');
             $('#dialog').append('<h5>School District</h5>');
             $('#dialog').append('<p style="margin-bottom:20px">' + info['agency_name_public_school_2010_11'] + '</p>');
-            $('#dialog').append('<h5>Numbers</h5>');
+            $('#dialog').append('<h5>Enrollment Data</h5>');
 
             var numbers_table = "<table class='table'>";
-
-            numbers_table+=('<tr><td width="50%"> Faculty </td> <td> ' + info['number_teachers'] + '</td></tr>');
-            if (info['prek_enroll']){
+            if (info['number_teachers'] > 0){
+                numbers_table+=('<tr><td width="50%"> Faculty </td> <td> ' + info['number_teachers'] + '</td></tr>');
+            }
+            if (info['prek_enroll'] > 0){
                 numbers_table+=('<tr><td> Pre-K </td> <td> ' + info['prek_enroll'] + '</td></tr>');
             }
-            if (info['k_fullday_enroll']){
+            if (info['k_fullday_enroll' > 0]){
                 numbers_table+=('<tr><td> Kindergarten </td> <td> ' + (info['k_fullday_enroll'] + info['k_halfday_enroll']) + '</td></tr>');
             }
             for (x = 1; x < 13; x++){
-                if (info['grade_' + x + '_enroll']){
+                if (info['grade_' + x + '_enroll'] > 0){
                     numbers_table+=('<tr><td> Grade' + x + ' </td> <td> ' + info['grade_' + x + '_enroll'] + '</td></tr>');
                 }
             }
