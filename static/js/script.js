@@ -94,13 +94,13 @@ function loadSchools(schools, layer) {
             var info = event.target.info;
             console.log(info);
             $('#dialog').empty();
-            $('#dialog').append('<h3>' + info.NAME + '</h3><hr>');
+            $('#dialog').append('<h3>' + info.NAME.toCamelCase() + '</h3><hr>');
             $('#dialog').append('<h5>Address</h5>');
-            $('#dialog').append('<address>' + info.STREET + '<br>' + info.CITY + ', ' + info.STATE + ' ' + info.ZIP5 + '</address>');
+            $('#dialog').append('<address>' + info.STREET.toCamelCase() + '<br>' + info.CITY.toCamelCase() + ', ' + info.STATE + ' ' + info.ZIP5 + '</address>');
             $('#dialog').append('<h5>Phone Number</h5>');
             $('#dialog').append('<p style="margin-bottom:20px">' + String(info['phone_number_public_school_2010_1']).replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3') + '</p>');
             $('#dialog').append('<h5>School District</h5>');
-            $('#dialog').append('<p style="margin-bottom:20px">' + info['agency_name_public_school_2010_11'] + '</p>');
+            $('#dialog').append('<p style="margin-bottom:20px">' + info['agency_name_public_school_2010_11'].toCamelCase() + '</p>');
             $('#dialog').append('<h5>Enrollment Data</h5>');
 
             var numbers_table = "<table class='table'>";
@@ -183,6 +183,16 @@ function handleRoutes () {
     });
 }
 
+/* Helper Functions */
+
+
+//
+// SOlution provided via:
+//  http://stackoverflow.com/a/5574446
+//
+String.prototype.toCamelCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
 
 function decompress (encoded, precision) {
    precision = Math.pow(10, -precision);
