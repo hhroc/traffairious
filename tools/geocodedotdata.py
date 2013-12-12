@@ -147,8 +147,8 @@ def geocoderoutes(routes):
                     break
                 else:
                     print "Warning: datasciencetoolkit.org failed to return a valid response ... trying again."
-                    time.sleep(.25)
-           
+                    #time.sleep(.25)           
+
             endaddress = "{0} and {1}, {2}, {3}".format(end,name,city,state)
             for j in range(0,4):
                 endsuccess,endlat,endlng = dstkgeocode(endaddress)
@@ -156,7 +156,7 @@ def geocoderoutes(routes):
                     break
                 else:
                     print "Warning: datasciencetoolkit.org failed to return a valid response ... trying again."
-                    time.sleep(.25)
+                    #time.sleep(.25)
 
             # if successful, then update the fields
             if beginsuccess == False or endsuccess == False:
