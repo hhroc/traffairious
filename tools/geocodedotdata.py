@@ -141,7 +141,7 @@ def geocoderoutes(routes):
         if begin != "" and end != "":
             
             beginaddress = "{0} and {1}, {2}, {3}".format(begin,name,city,state)
-            for j in range(0,4):
+            for j in range(0,10):
                 beginsuccess,beginlat,beginlng = dstkgeocode(beginaddress)
                 if beginsuccess:
                     break
@@ -150,7 +150,7 @@ def geocoderoutes(routes):
                     time.sleep(.5)           
 
             endaddress = "{0} and {1}, {2}, {3}".format(end,name,city,state)
-            for j in range(0,4):
+            for j in range(0,10):
                 endsuccess,endlat,endlng = dstkgeocode(endaddress)
                 if endsuccess:
                     break
