@@ -59,7 +59,7 @@ def readdata(filename,delimiter):
         else:
             route = {}
             for j in range(0,len(items)):
-                item = items[j]
+                item = items[j].strip()
                 if item in stringTypes:
                     item = int(item)
                 route[columns[j]] = item
