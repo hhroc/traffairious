@@ -108,14 +108,14 @@ def geocoderoutes(routes):
             
             # if successful, then update the fields
             if beginsuccess == False or endsuccess == False:
-                print "Error: geocode failure."
+                raise Exception("Error: geocode failure.")
             else:
                 route['begin_latitude'] = beginlat
                 route['begin_longitude'] = beginlng
                 route['end_latitude'] = endlat
                 route['end_longitude'] = endlng
 
-                print "Success! {0} and {1}: ({2},{3}) to {4} and {5}: ({6},{7})".format(begin,name,beginlat,beginlng,end,name,endlat,endlng)
+                print "[{8}] Success! {0} and {1}: ({2},{3}) to {4} and {5}: ({6},{7})".format(begin,name,beginlat,beginlng,end,name,endlat,endlng,i)
 
         # write it out to the file. we are doing this every time because
         # the data is too valuable to loose on the last iteration (read: i don't
@@ -126,7 +126,7 @@ def geocoderoutes(routes):
         f.write(output)
 
         # so we don't get banned from MapQuest ...
-        time.sleep(1)
+        #time.sleep(.25)
 
         i += 1
 
