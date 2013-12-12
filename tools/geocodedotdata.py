@@ -20,6 +20,7 @@ stringTypes = ['RC_ID',
 
 def geocodemq(address):
     success = True
+    badkey = False
     try:
         # build URL
         vals = {'location': address}
@@ -35,13 +36,19 @@ def geocodemq(address):
         # pull out lat/lng from json response
         _json = simplejson.loads(rawjson)
         #print _json
+
+        if len(_json['results'][0]['locations']) == 0:
+            if _json['info']['statuscode'] == 403:
+                badkey = True
+                raise Exception("Bad Key")
+
         lat = _json['results'][0]['locations'][0]['latLng']['lat']
         lng = _json['results'][0]['locations'][0]['latLng']['lng']
     except:
         success = False
         lat = 0
         lng = 0
-    return (success,lat,lng)
+    return (badkey,success,lat,lng)
 
 def readdata(filename,delimiter):
     routes = []
@@ -90,9 +97,14 @@ def geocoderoutes(routes):
             
             # do geocode
             beginaddress = "{0} and {1}, {2}, {3}".format(begin,name,city,state)
-            beginsuccess,beginlat,beginlng = geocodemq(beginaddress)
+            badkey,beginsuccess,beginlat,beginlng = geocodemq(beginaddress)
+            if badkey:
+                raise Exception("Nothing was returned, is it possible your key is bad?")
+
             endaddress = "{0} and {1}, {2}, {3}".format(end,name,city,state)
-            endsuccess,endlat,endlng = geocodemq(endaddress)
+            badkey,endsuccess,endlat,endlng = geocodemq(endaddress)
+            if badkey:
+                raise Exception("Nothing was returned, is it possible your key is bad?")
             
             # if successful, then update the fields
             if beginsuccess == False or endsuccess == False:
