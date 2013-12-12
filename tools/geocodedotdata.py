@@ -4,9 +4,9 @@ import simplejson
 import time
 import subprocess
 
-key = ""
-with open("mqkey.txt","r") as f:
-    key = f.read().strip()
+#key = ""
+#with open("mqkey.txt","r") as f:
+#    key = f.read().strip()
 
 stringTypes = ['RC_ID',
                'RoadwayType',
@@ -147,7 +147,7 @@ def geocoderoutes(routes):
                     break
                 else:
                     print "Warning: datasciencetoolkit.org failed to return a valid response ... trying again."
-                    #time.sleep(.25)           
+                    time.sleep(.5)           
 
             endaddress = "{0} and {1}, {2}, {3}".format(end,name,city,state)
             for j in range(0,4):
@@ -156,7 +156,7 @@ def geocoderoutes(routes):
                     break
                 else:
                     print "Warning: datasciencetoolkit.org failed to return a valid response ... trying again."
-                    #time.sleep(.25)
+                    time.sleep(.5)
 
             # if successful, then update the fields
             if beginsuccess == False or endsuccess == False:
@@ -179,7 +179,7 @@ def geocoderoutes(routes):
         f.write(output)
 
         # so we don't get banned from MapQuest ...
-        #time.sleep(.25)
+        time.sleep(.5)
 
         i += 1
 
