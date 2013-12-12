@@ -27,6 +27,8 @@ $(document).ready(function () {
 
     displayCounties();
 
+    $('#modal').modal('show');
+
 });
 
 function displayCounties() {
@@ -87,6 +89,7 @@ function loadCounties() {
 }
 
 function loadSchools(schools, layer) {
+	layer.setStyle({ fillColor: 'blue' });
     schools.forEach(function (school) {
         school_marker = L.marker([school.GDTLAT, school.GDTLONG]).addTo(map);
         school_marker.info = school;

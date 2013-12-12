@@ -27,6 +27,10 @@ h1,h2,h3,h4,h5,h6 {
     text-align: center;
 }
 
+.modal-dialog-center {
+    margin-top: 10%;
+}
+
 .lecture_list>li{
     font-size: 24.5px;
     margin: -10px 0;
