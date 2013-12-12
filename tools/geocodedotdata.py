@@ -2,6 +2,7 @@ import urllib
 import urllib2
 import simplejson
 import time
+import subprocess
 
 key = ""
 with open("mqkey.txt","r") as f:
@@ -50,6 +51,50 @@ def geocodemq(address):
         lng = 0
     return (badkey,success,lat,lng)
 
+def dstkgeocode(address):
+    success = True
+    badkey = False
+    try:
+        # build URL
+        #vals = {'address': address}
+        #qstr = urllib.urlencode(vals)
+        #url = "http://www.mapquestapi.com/geocoding/v2/address?key={0}&outFormat=json&maxResults=1&{1}".format(key,qstr)
+        url = "http://www.datasciencetoolkit.org/maps/api/geocode/json?sensor=false&address={0}".format(address.replace(' ','+'))
+        
+        #print "url: {0}".format(url)
+
+        # do http request
+        #headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36' }
+        #headers = {}
+        #req = urllib2.Request(url, urllib.urlencode({}), headers)
+        #response = urllib2.urlopen(req)
+        #rawjson = response.read()
+
+        p1 = subprocess.Popen(["curl", "-s", url],stdout=subprocess.PIPE)
+        rawjson = p1.communicate()[0]
+
+        #print rawjson
+
+        # pull out lat/lng from json response
+        _json = simplejson.loads(rawjson)
+        #print _json
+
+        #if len(_json['results'][0]['locations']) == 0:
+        #    if _json['info']['statuscode'] == 403:
+        #        badkey = True
+        #        raise Exception("Bad Key")
+
+        lat = _json['results'][0]['geometry']['location']['lat']
+        lng = _json['results'][0]['geometry']['location']['lng']
+        #print "lat/lng = {0},{1}".format(lat,lng)
+        #raise Exception('debug')
+        success = True
+    except:
+        success = False
+        lat = 0
+        lng = 0
+    return (success,lat,lng)
+
 def readdata(filename,delimiter):
     routes = []
     lines = []
@@ -95,17 +140,24 @@ def geocoderoutes(routes):
         # enough data to do the geo code
         if begin != "" and end != "":
             
-            # do geocode
             beginaddress = "{0} and {1}, {2}, {3}".format(begin,name,city,state)
-            badkey,beginsuccess,beginlat,beginlng = geocodemq(beginaddress)
-            if badkey:
-                raise Exception("Nothing was returned, is it possible your key is bad?")
-
+            for j in range(0,4):
+                beginsuccess,beginlat,beginlng = dstkgeocode(beginaddress)
+                if beginsuccess:
+                    break
+                else:
+                    print "Warning: datasciencetoolkit.org failed to return a valid response ... trying again."
+                    time.sleep(.25)
+           
             endaddress = "{0} and {1}, {2}, {3}".format(end,name,city,state)
-            badkey,endsuccess,endlat,endlng = geocodemq(endaddress)
-            if badkey:
-                raise Exception("Nothing was returned, is it possible your key is bad?")
-            
+            for j in range(0,4):
+                endsuccess,endlat,endlng = dstkgeocode(endaddress)
+                if endsuccess:
+                    break
+                else:
+                    print "Warning: datasciencetoolkit.org failed to return a valid response ... trying again."
+                    time.sleep(.25)
+
             # if successful, then update the fields
             if beginsuccess == False or endsuccess == False:
                 raise Exception("Error: geocode failure.")
@@ -116,6 +168,7 @@ def geocoderoutes(routes):
                 route['end_longitude'] = endlng
 
                 print "[{8}] Success! {0} and {1}: ({2},{3}) to {4} and {5}: ({6},{7})".format(begin,name,beginlat,beginlng,end,name,endlat,endlng,i)
+
 
         # write it out to the file. we are doing this every time because
         # the data is too valuable to loose on the last iteration (read: i don't
