@@ -97,7 +97,8 @@ function loadSchools(schools, layer) {
             var info = event.target.info;
             console.log(info);
             $('#dialog').empty();
-            $('#dialog').append('<h3>' + info.NAME.toCamelCase() + '</h3><hr>');
+            $('#dialog').append('<h3>' + info.NAME.toCamelCase() + '</h3>');
+            $('#dialog').append('<h4>' + info.agency_name_public_school_2010_11.toCamelCase() + '</h3></hr>');
             $('#dialog').append('<h5>Address</h5>');
             $('#dialog').append('<address>' + info.STREET.toCamelCase() + '<br>' + info.CITY.toCamelCase() + ', ' + info.STATE + ' ' + info.ZIP5 + '</address>');
             $('#dialog').append('<h5>Phone Number</h5>');
