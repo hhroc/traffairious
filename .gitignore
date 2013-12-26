@@ -4,3 +4,5 @@ dist
 *.~lock*
 *.sublime-project
 *.sublime-workspace
+workon/
+traffairious/
