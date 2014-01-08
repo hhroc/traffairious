@@ -10,7 +10,7 @@ def readcolumns(data):
         #else:
         #    isnum = False
         #print "'{0}' is '{1}'".format(name,isnum)
-        columns.append(name) #,isnum))
+        columns.append(name.lower()) #,isnum))
     return columns
 
 def readdata(infile):
@@ -66,8 +66,25 @@ if __name__ == '__main__':
         result['traffic_volume'] = volume
         results.append(result)
 
+    print "Creating Data Sets for Specific Counties ..."
+    muncipalities = ['brighton','brockport','chili','churchville','clarkson',
+                     'east rochester','fairport','gates','greece','hamlin',
+                     'henrietta','hilton','honeoye falls','irondequoit','mendon',
+                     'ogden','parma','penfield','perinton','pittsford','riga',
+                     'rochester','rush','scottsville','spencerport','sweden',
+                     'webster','wheatland']
+    placetypes = ['town','village','city','hamlet']
+    monroe = []
+    for result in results:
+        for muncipality in muncipalities:
+            if muncipality.lower() in result['muncipality'].lower():
+                monroe.append(result)
+
     with open("../data/distilled_dot_data.json","w") as f:
         f.write(json.dumps(results))
+
+    with open("../data/monroe_dot_data.json","w") as f:
+        f.write(json.dumps(monroe))
 
     print "File Processed Successfully."
 
