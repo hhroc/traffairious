@@ -5,12 +5,12 @@ def readcolumns(data):
     #print data[1]
     for i in range(0,len(data[0])):
         name = data[0][i].strip()
-        if len(name.strip()) == 4: #data[1][i].replace('-','').strip():
-            isnum = True
-        else:
-            isnum = False
+        #if len(name.strip()) == 4: #data[1][i].replace('-','').strip():
+        #    isnum = True
+        #else:
+        #    isnum = False
         #print "'{0}' is '{1}'".format(name,isnum)
-        columns.append((name,isnum))
+        columns.append(name) #,isnum))
     return columns
 
 def readdata(infile):
@@ -44,24 +44,27 @@ if __name__ == '__main__':
     print "Reading Column Headers ..."
     columns = readcolumns(rows)
 
+    #print columns
+
     rows = rows[1:]
     #print "{0}\n".format(rows[0])
     #print "{0}\n".format(rows[1])
 
-    validcols = [0,1,2,3,4,5,6,7,8,9,10]
+    colindex = 10
 
     print "Processing Data ..."
     results = []
     for row in rows:
         result = {}
-        for i in range(0,len(validcols)):
+        for i in range(0,colindex):
             result[columns[i]] = row[i]
         volume = 0;
-        for i in range(13,47):
-            if row[i].strip() != '':
-                volumn = row[i]
+        for i in range(11,46):
+            if not row[i].strip() == '':
+                volume = int(row[i])
                 break
-        result['traffic_volume'] = volume;
+        result['traffic_volume'] = volume
+        results.append(result)
 
     with open("../data/distilled_dot_data.json","w") as f:
         f.write(json.dumps(results))
