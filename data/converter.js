@@ -1,13 +1,18 @@
-var json = require('./routes2011shapepoints.json'),
+var json = require('./monroe_dot_data.json'),
     fs = require('fs');
 
 function parse () {
     json.forEach(function (route) {
-        var points = decompress(route.shapepoints, 6);
-        route.shapepoints = points;
+        if (route.shape_points == "") {
+            route.route_path = "";
+        } else {
+            var points = decompress(route.shape_points, 6);
+            console.log(route);
+            route.route_path = points;
+        }
     });
 
-    fs.writeFile('routes2011shapepoints.json', JSON.stringify(json), function (err) {
+    fs.writeFile('routes/routes_monroe.json', JSON.stringify(json), function (err) {
         if (err) {
             console.log(err);
         } else {
