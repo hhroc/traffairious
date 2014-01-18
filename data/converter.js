@@ -6,11 +6,22 @@ function parse () {
         if (route.shape_points == "") {
             route.route_path = "";
         } else {
-            var points = decompress(route.shape_points, 6);
-            console.log(route);
+            var point_list = decompress(route.shape_points, 6),
+                point = {},
+                points = [];
+            for(var i = 0; i < point_list.length; i++) {
+                if(i % 2 != 0 || i == 0) {
+                    point.lng = point_list[i];
+                } else {
+                    point.lat = point_list[i];
+                    points.push(point);
+                    point = {};
+                }
+            }
             route.route_path = points;
         }
     });
+
 
     fs.writeFile('routes/routes_monroe.json', JSON.stringify(json), function (err) {
         if (err) {
