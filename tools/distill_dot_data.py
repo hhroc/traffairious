@@ -80,6 +80,8 @@ def geocodemq(address,key):
 
 def getshapepoints(fromlat,fromlng,tolat,tolng):
 
+    print "Getting directions for ({0},{1}) -> ({2},{3}) ...".format(fromlat,fromlng,tolat,tolng)
+
     obj = {
            "locations":[
              {"latLng":{
@@ -98,11 +100,11 @@ def getshapepoints(fromlat,fromlng,tolat,tolng):
              "width":3750,
              "height":1400,
              "scale":433342,
-           },
-           "options":{
-           "shapeFormat":"cmp6"
-         }
-    }
+           }#,
+           #"options":{
+           #  "shapeFormat":"cmp6"
+           #}
+          }
 
     jsonobj = json.dumps(obj).replace(' ','').replace('"','%22')
     url = "http://www.mapquestapi.com/directions/v2/route?key={0}&json={1}".format(key,jsonobj)
@@ -120,11 +122,18 @@ def getshapepoints(fromlat,fromlng,tolat,tolng):
         response = urllib2.urlopen(req)
         rawjson = response.read()
 
-        print rawjson
+        #print rawjson
 
         response = json.loads(rawjson)
 
         shapepoints = response['route']['shape']['shapePoints']
+       
+        #shapepoints = []
+        #for
+ 
+        #print shapepoints
+        #raise Exception('debug')
+
         success = True
 
         #printf "Obtained Shape Points Successfully."
@@ -132,8 +141,8 @@ def getshapepoints(fromlat,fromlng,tolat,tolng):
     except:
         success = False
         shapepoints = ""
-        print "\n\nERROR\n\n"
-        print json.dumps(response)
+        #print "\n\nERROR\n\n"
+        #print json.dumps(response)
         print "\n\n\tERROR: Unable to get shape points!\n\n"
 
     return success,shapepoints
@@ -237,6 +246,7 @@ if __name__ == '__main__':
                      'webster','wheatland']
     placetypes = ['town','village','city','hamlet']
     monroe = []
+    count = 0
     for result in results:
         for muncipality in muncipalities:
             if muncipality.lower() in result['muncipality'].lower():
@@ -255,20 +265,26 @@ if __name__ == '__main__':
                 endaddress = "{0} and {1}, {2}, {3}".format(end,name,city,state)
                 endsuccess,endlat,endlng = geocodemq(endaddress,key)
 
-                success,shapepoints = getshapepoints(beginlat,beginlng,endlat,endlng)
+                if beginsuccess == False or endsuccess == False:
+                    shapepoints = []
+                else:
 
-                # update the result
+                    success,shapepoints = getshapepoints(beginlat,beginlng,endlat,endlng)
+
+                    # update the result
                 result['begin_latitude'] = beginlat
                 result['begin_longitude'] = beginlng
                 result['end_latitude'] = endlat
                 result['end_longitude'] = endlng
-                result['shape_points'] = shapepoints
+                result['route_path'] = shapepoints
 
-		print json.dumps(result)
+		#print json.dumps(result)
 
                 monroe.append(result)
 
                 print "'{0}' geocoded successfully ({1},{2} -> {3},{4})".format(result['name'],beginlat,beginlng,endlat,endlng)
+                count += 1
+                print "Completed {0} routes.".format(count)
 
                 #raise Exception("debug")
 
