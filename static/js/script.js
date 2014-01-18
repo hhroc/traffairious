@@ -25,7 +25,7 @@ $(document).ready(function () {
          ]
     });
 
-    displayCounties();
+    //displayCounties();
 
     $('#modal').modal('show');
 
@@ -152,7 +152,7 @@ function loadTowns (data, county) {
 
     L.geoJson(data, {
         style: function (feature) {
-            return {color: 'red', opacity: 1, fillOpacity: 0};
+            return {color: 'blue', opacity: 1, fillOpacity: 0};
         },
         onEachFeature: function (feature, layer) {
             current_towns.addLayer(layer);
@@ -162,23 +162,37 @@ function loadTowns (data, county) {
 
 function displayMonroe() {
     $.getJSON('static/data/routes_monroe.json', function (data) {
-        data.forEach(function (route) {
+        var count = 0;
+        for(var j=0; j<25; j++) { //data.length;j++) {
             var result = [];
             var last = null;
-            for( var i=0; i<route.route_path[i].length; i++ ) {
-                if (route.route_path[i].length != 0) {
-                    var lat = route.route_path[i].lat;
-                    var lng = route.route_path[i].lng;
-                    var c = new L.latLng([lat, lng]);
-                    if(last != null) {
-                        result.push([last, c]);
-                    } else {
-                        last = c;
-                    }
+            if( data[j].route_path != undefined ) {
+                console.log("drawing path ...");
+                for( var i=0; i<data[j].route_path[i].length; i++ ) {
+                    //if (route.route_path[i] != undefined ) {
+                        var lat = data[j].route_path[i].lat;
+                        var lng = data[j].route_path[i].lng;
+                        console.log('adding (' + lat + ', ' + lng + ') to the map ...');
+                        var c = new L.latLng(lat, lng);
+                        //result.push(c)
+                        if(last != null) {
+                            result.push([last, c]);
+                        } else {
+                            last = c;
+                        }
+                    //}
                 }
             }
+            else {
+                console.log('item #' + i + ' was undefined ... skipping.');
+            }
             window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
-        });
+
+            count++;
+            if( count == 3 ) {
+                break;
+            }
+        }
     });
 }
 
