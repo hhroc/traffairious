@@ -160,7 +160,33 @@ function loadTowns (data, county) {
     }).addTo(map);
 }
 
+function displayMonroe() {
+    $.getJSON('static/data/routes_monroe.json', function (data) {
+        data.forEach(function (route) {
+            var result = [];
+            var last = null;
+            for( var i=0; i<route.route_path[i].length; i++ ) {
+                if (route.route_path[i].length != 0) {
+                    var lat = route.route_path[i].lat;
+                    var lng = route.route_path[i].lng;
+                    var c = new L.latLng([lat, lng]);
+                    if(last != null) {
+                        result.push([last, c]);
+                    } else {
+                        last = c;
+                    }
+                }
+            }
+            window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
+        });
+    });
+}
+
 function handleRoutes () {
+
+    displayMonroe();
+
+    /*
     $.getJSON('static/data/routes.json', function (data) {
         //data.forEach(function (route) {
             var route = data[1];
@@ -185,6 +211,8 @@ function handleRoutes () {
             window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
         //});
     });
+
+   */
 }
 
 /* Helper Functions */
