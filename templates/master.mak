@@ -16,6 +16,7 @@
     <link href="/static/css/site.css" rel="stylesheet" />
     <link href="/static/css/pace-theme-bounce.css" rel="stylesheet" />
     <link href="/static/css/pace.css" rel="stylesheet" />
+	<link href="/static/css/l.geosearch.css" rel="stylesheet" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>

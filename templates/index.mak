@@ -30,4 +30,6 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
     <script src="/static/js/utilities.js"></script>
     <script src="/static/js/script.js"></script>
+	<script src="/static/js/l.control.geosearch.js"></script>
+	<script src="/static/js/l.geosearch.provider.esri.js"></script>
 </%def>
