@@ -161,37 +161,45 @@ function loadTowns (data, county) {
 }
 
 function displayMonroe() {
-    $.getJSON('static/data/routes_monroe.json', function (data) {
-        var count = 0;
-        for(var j=0; j<25; j++) { //data.length;j++) {
+    $.getJSON('static/data/monroe_dot_data.json', function (data) {
+        //var count = 0;
+        console.log('Number of Routes = ' + data.length);
+        //var j = 0;
+        for(var j=0; j<data.length;j++) {
             var result = [];
             var last = null;
             if( data[j].route_path != undefined ) {
-                console.log("drawing path ...");
-                for( var i=0; i<data[j].route_path[i].length; i++ ) {
+                //console.log("drawing path ...");
+                //console.log(data[j]);
+                console.log('route_path:');
+                //console.log(data[j].route_path);
+                for( var i=0; i<data[j].route_path.length; i+=2 ) {
                     //if (route.route_path[i] != undefined ) {
-                        var lat = data[j].route_path[i].lat;
-                        var lng = data[j].route_path[i].lng;
-                        console.log('adding (' + lat + ', ' + lng + ') to the map ...');
+                        var lat = data[j].route_path[i];
+                        var lng = data[j].route_path[i+1];
+                        //console.log(lat + ', ' + lng);
                         var c = new L.latLng(lat, lng);
-                        //result.push(c)
-                        if(last != null) {
-                            result.push([last, c]);
-                        } else {
-                            last = c;
-                        }
+                        result.push(c)
+                        //if(last != null) {
+                        //    result.push([last, c]);
+                        //} else {
+                        //    last = c;
+                        //}
                     //}
                 }
+                //console.log('result:');
+                //console.log(result);
+                window.a = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
             }
             else {
                 console.log('item #' + i + ' was undefined ... skipping.');
             }
-            window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
+            //window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
 
-            count++;
-            if( count == 3 ) {
-                break;
-            }
+            //count++;
+            //if( count == 3 ) {
+            //    break;
+            //}
         }
     });
 }
