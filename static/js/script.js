@@ -25,6 +25,11 @@ $(document).ready(function () {
          ]
     });
 
+    new L.Control.GeoSearch({
+        provider: new L.GeoSearch.Provider.Esri(),
+        showMarker: true
+    }).addTo(map)
+    
     //displayCounties();
 
     $('#modal').modal('show');
