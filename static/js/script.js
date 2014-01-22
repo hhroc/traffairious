@@ -39,7 +39,7 @@ $(document).ready(function () {
 
 });
 
-function onClick(e){
+function onClick(e){    
     popup
     .setLatLng(e.latlng)
     .setContent(e.latlng.toString())
@@ -56,7 +56,7 @@ function displayCounties() {
 function loadCounties() {
     map.setZoom(7);
     window.setTimeout(function () {
-        map.panTo([43.12504316740127, -77.640380859375]);
+        map.panTo([43.12504316740127, -77.740380859375]);
         map.setZoom(11);
     }, 800);
     if (old_counties.length != 0) {
