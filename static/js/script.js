@@ -4,7 +4,8 @@ var map_container = document.getElementById('map-canvas'),
     old_counties = [],
     town_schools = [];
 
-
+var geojson;
+var popup = L.popup();
 
 $(document).ready(function () {
     handleRoutes();
@@ -18,8 +19,8 @@ $(document).ready(function () {
         current_towns = L.layerGroup();
 
     window.map = L.map('map-canvas', {
-        center: [42.6501, -76.3659],
-        zoom: 7,
+        center: [43.16412, -77.60124], //[42.6501, -76.3659],
+        zoom: 12,
         layers: [
             main
          ]
@@ -32,9 +33,18 @@ $(document).ready(function () {
     
     //displayCounties();
 
+    map.on('click', onClick);
+
     $('#modal').modal('show');
 
 });
+
+function onClick(e){
+    popup
+    .setLatLng(e.latlng)
+    .setContent(e.latlng.toString())
+    .openOn(map);
+}
 
 function displayCounties() {
     for(var town in current_towns._layers) {
@@ -165,8 +175,42 @@ function loadTowns (data, county) {
     }).addTo(map);
 }
 
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#00FF00',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    //if (!L.Browser.ie && !L.Browser.opera) {
+    //    layer.bringToFront();
+    //}
+}
+
+function resetHighlight(e) {
+
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#FF0000',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    //console.log(Object.getOwnPropertyNames(e.target));
+    //geojson.resetStyle(e.target);
+}
+
 function displayMonroe() {
-    $.getJSON('static/data/monroe_dot_data.json', function (data) {
+
+    //geojson = L.geoJson();
+
+    //$.getJSON('static/data/monroe_over_50k_dot_data.json', function (data) {
+    $.getJSON('static/data/monroe_final.json', function (data) {
         //var count = 0;
         console.log('Number of Routes = ' + data.length);
         //var j = 0;
@@ -176,7 +220,7 @@ function displayMonroe() {
             if( data[j].route_path != undefined ) {
                 //console.log("drawing path ...");
                 //console.log(data[j]);
-                console.log('route_path:');
+                //console.log('route_path:');
                 //console.log(data[j].route_path);
                 for( var i=0; i<data[j].route_path.length; i+=2 ) {
                     //if (route.route_path[i] != undefined ) {
@@ -194,7 +238,18 @@ function displayMonroe() {
                 }
                 //console.log('result:');
                 //console.log(result);
-                window.a = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
+                //window.a = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
+                var path = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
+                var html = "<div>";
+                html += "<b>RC ID:</b> " + data[j].rc_id + "</br>";
+                html += "<b>Road:</b> " + data[j].name + "</br>";
+                html += "<b>Start Desc:</b> " + data[j].begin_description + "</br>";
+                html += "<b>Start Location:</b> " + data[j].begin_loc + "</br>";
+                html += "<b>End Desc:</b> " + data[j].end_description + "</br>";
+                html += "<b>End Location:</b> " + data[j].end_loc + "</br>";
+                html += "</div>";
+                path.bindPopup(html);
+                path.on({mouseover: highlightFeature, mouseout: resetHighlight});
             }
             else {
                 console.log('item #' + i + ' was undefined ... skipping.');
