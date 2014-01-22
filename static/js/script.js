@@ -136,7 +136,7 @@ function loadSchools(schools, layer) {
             numbers_table+=('</table>');
             $('#dialog').append(numbers_table);
 
-            $('#dialog').append('<button class="btn btn-primary" id="go-back" onclick="displayCounties()">Back</button>');
+            //$('#dialog').append('<button class="btn btn-primary" id="go-back" onclick="displayCounties()">Back</button>');
         });
         town_schools.push(school_marker);
     });

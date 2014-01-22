@@ -2,7 +2,7 @@
 <div class="col-md-10" id="map-canvas"></div>
 <div id="dialog" class="col-md-2">
 	<div title="title">Traffairious</div>
-    <button id="go-back" onclick="displayCounties()">Back</button>
+    <!--<button id="go-back" onclick="displayCounties()">Back</button>-->
 </div>
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
