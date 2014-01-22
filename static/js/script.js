@@ -211,44 +211,47 @@ function displayMonroe() {
         console.log('Number of Routes = ' + data.length);
         //var j = 0;
         for(var j=0; j<data.length;j++) {
-            var result = [];
-            var last = null;
-            if( data[j].route_path != undefined ) {
-                //console.log("drawing path ...");
-                //console.log(data[j]);
-                //console.log('route_path:');
-                //console.log(data[j].route_path);
-                for( var i=0; i<data[j].route_path.length; i+=2 ) {
-                    //if (route.route_path[i] != undefined ) {
-                        var lat = data[j].route_path[i];
-                        var lng = data[j].route_path[i+1];
-                        //console.log(lat + ', ' + lng);
-                        var c = new L.latLng(lat, lng);
-                        result.push(c)
-                        //if(last != null) {
-                        //    result.push([last, c]);
-                        //} else {
-                        //    last = c;
+
+            if (data[j]['traffic_volume'] > 50000) {
+                var result = [];
+                var last = null;
+                if( data[j].route_path != undefined ) {
+                    //console.log("drawing path ...");
+                    //console.log(data[j]);
+                    //console.log('route_path:');
+                    //console.log(data[j].route_path);
+                    for( var i=0; i<data[j].route_path.length; i+=2 ) {
+                        //if (route.route_path[i] != undefined ) {
+                            var lat = data[j].route_path[i];
+                            var lng = data[j].route_path[i+1];
+                            //console.log(lat + ', ' + lng);
+                            var c = new L.latLng(lat, lng);
+                            result.push(c)
+                            //if(last != null) {
+                            //    result.push([last, c]);
+                            //} else {
+                            //    last = c;
+                            //}
                         //}
-                    //}
+                    }
+                    //console.log('result:');
+                    //console.log(result);
+                    //window.a = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
+                    var path = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
+                    var html = "<div>";
+                    html += "<b>RC ID:</b> " + data[j].rc_id + "</br>";
+                    html += "<b>Road:</b> " + data[j].name + "</br>";
+                    html += "<b>Start Desc:</b> " + data[j].begin_description + "</br>";
+                    html += "<b>Start Location:</b> " + data[j].begin_loc + "</br>";
+                    html += "<b>End Desc:</b> " + data[j].end_description + "</br>";
+                    html += "<b>End Location:</b> " + data[j].end_loc + "</br>";
+                    html += "</div>";
+                    path.bindPopup(html);
+                    path.on({mouseover: highlightFeature, mouseout: resetHighlight});
                 }
-                //console.log('result:');
-                //console.log(result);
-                //window.a = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
-                var path = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
-                var html = "<div>";
-                html += "<b>RC ID:</b> " + data[j].rc_id + "</br>";
-                html += "<b>Road:</b> " + data[j].name + "</br>";
-                html += "<b>Start Desc:</b> " + data[j].begin_description + "</br>";
-                html += "<b>Start Location:</b> " + data[j].begin_loc + "</br>";
-                html += "<b>End Desc:</b> " + data[j].end_description + "</br>";
-                html += "<b>End Location:</b> " + data[j].end_loc + "</br>";
-                html += "</div>";
-                path.bindPopup(html);
-                path.on({mouseover: highlightFeature, mouseout: resetHighlight});
-            }
-            else {
-                console.log('item #' + i + ' was undefined ... skipping.');
+                else {
+                    console.log('item #' + i + ' was undefined ... skipping.');
+                }
             }
             //window.a = new L.multiPolyline(result, {color: 'red', weight: 8}).addTo(map);
 
