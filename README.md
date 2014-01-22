@@ -25,9 +25,9 @@ Setup
 
 Install the dependencies with
 
-    python setup.py install
-    
-and then run traffairious with
+    pip install -r requirements.txt
+
+and run the application with
 
     python run.py
 
