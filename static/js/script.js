@@ -31,7 +31,7 @@ $(document).ready(function () {
         showMarker: true
     }).addTo(map)
     
-    //displayCounties();
+    displayCounties();
 
     map.on('click', onClick);
 
@@ -167,7 +167,7 @@ function loadTowns (data, county) {
 
     L.geoJson(data, {
         style: function (feature) {
-            return {color: 'blue', opacity: 1, fillOpacity: 0};
+            return {color: 'blue', opacity: .25, fillOpacity: 0};
         },
         onEachFeature: function (feature, layer) {
             current_towns.addLayer(layer);
