@@ -12,8 +12,8 @@ $(document).ready(function () {
     $('#go-back').hide();
     var main = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data © OpenStreetMap contributors',
-                minZoom: 5,
-                maxZoom: 18,
+                minZoom: 10,
+                maxZoom: 16,
             });
         counties = L.layerGroup(),
         current_towns = L.layerGroup();
