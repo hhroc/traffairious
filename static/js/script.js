@@ -67,6 +67,8 @@ function loadCounties() {
             map.removeLayer(town_schools[marker]);
         }
     } else {
+        var DEBUG = false
+        if ( DEBUG == tRUE ) {
         $.getJSON('static/data/nys_counties.json', function (data) {
             L.geoJson(data, {
                 style: function (feature) {
@@ -83,12 +85,14 @@ function loadCounties() {
                         var name = feature.properties.NAMELSAD.toLowerCase().trim().replace(/\s/g,'_').replace('.', '');
                         var county_url = 'static/data/counties/' + name + "_towns.json",
                             school_url = 'static/data/schools/'  + name + ".json";
+                        
                         $.getJSON(county_url, function (data) {
                             loadTowns(data, layer);
                         });
                         $.getJSON(school_url, function (data) {
                             loadSchools(data, layer);
                         });
+                        
                     });
                     layer.on('mouseover', function (event) {
                         layer.setStyle({ fillColor: 'red' });
@@ -100,6 +104,7 @@ function loadCounties() {
                 },
             }).addTo(map);
         });
+        }
     }
 }
 
