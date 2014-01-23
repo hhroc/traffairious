@@ -31,7 +31,7 @@
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">HOME</a>
+        <a class="navbar-brand" href="#">traffairious</a>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -43,8 +43,9 @@
           Fork me on <a target="_blank" href="http://github.com/HHROC/traffairious" class="navbar-link">Github</a>
         </p>
         <ul class="nav navbar-nav">
-          <li><a href="/about">About</a></li>
-          <li><a href="/story">The Story</a></li>
+          <li id="nav-map"><a href="/">Map</a></li>        
+          <li id="nav-about"><a href="/about">About</a></li>
+          <li id="nav-story"><a href="/story">The Story</a></li>
           <li><a target="_blank" href="http://www.meetup.com/HackshackersROC">HHROC</a></li>
         </ul>
       </div><!--/.nav-collapse -->

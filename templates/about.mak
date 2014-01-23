@@ -25,3 +25,7 @@
   <p><a class="btn btn-default" target="_blank" href="http://www.makotemplates.org/">View details &raquo;</a></p>
 </div><!--/span-->
 </div><!--/row-->
+
+<%def name="scripts()">
+    <script src="/static/js/active-nav.js"></script>
+</%def>

@@ -6,3 +6,7 @@
 
 </div><!--/span-->
 </div><!--/row-->
+
+<%def name="scripts()">
+    <script src="/static/js/active-nav.js"></script>
+</%def>
