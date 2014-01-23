@@ -1,7 +1,7 @@
 <%inherit file="master.mak" />
 <div class="col-md-10" id="map-canvas"></div>
 <div id="dialog" class="col-md-2">
-	<div title="title">Traffairious</div>
+	<div title="title"></br><center><b>Click a school icon on the map to display information about it.</b></center></div>
     <!--<button id="go-back" onclick="displayCounties()">Back</button>-->
 </div>
 
