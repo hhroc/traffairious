@@ -76,14 +76,14 @@ if __name__ == '__main__':
                      'rochester','rush','scottsville','spencerport','sweden',
                      'webster','wheatland']
 
-    monroelow = []
-    monroehigh = []
+    monroe25k = []
+    monroe50k = []
     count = 0
     ids = []
     for result in results:
         for muncipality in muncipalities:
             if muncipality.lower() in result['muncipality'].lower():
-                if result['traffic_volume'] > 50000:
+                if result['traffic_volume'] >= 50000:
 
                     # to cover the SAME ID IN THE DATA SET MORE THAN ONCE OMG
                     if result['rc_id'] in ids:
@@ -97,7 +97,7 @@ if __name__ == '__main__':
                             result[key] = re.sub(' +',' ',val.lower().strip())
 
                     # add the route to the list
-                    monroehigh.append(result)
+                    monroe50k.append(result)
 
                 elif result['traffic_volume'] > 25000 and result['traffic_volume'] < 50000:
 
@@ -113,13 +113,16 @@ if __name__ == '__main__':
                             result[key] = re.sub(' +',' ',val.lower().strip())
 
                     # add the route to the list
-                    monroelow.append(result)
+                    monroe25k.append(result)
 
-    #with open("../data/monroe_raw.json","w") as f:
-    #    f.write(json.dumps(monroe))
+    with open("../data/monroe_raw_50k.json","w") as f:
+        f.write(json.dumps(monroe50k))
+    
+    with open("../data/monroe_raw_25k.json","w") as f:
+        f.write(json.dumps(monroe25k))
 
-    print "50,000+ = {0}".format(len(monroehigh))
-    print "25,000 - 49,999 = {0}".format(len(monroelow))
+    print "50,000+ = {0}".format(len(monroe50k))
+    print "25,000 - 49,999 = {0}".format(len(monroe25k))
 
     print "File Processed Successfully."
 
