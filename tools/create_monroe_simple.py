@@ -76,7 +76,8 @@ if __name__ == '__main__':
                      'rochester','rush','scottsville','spencerport','sweden',
                      'webster','wheatland']
 
-    monroe = []
+    monroelow = []
+    monroehigh = []
     count = 0
     ids = []
     for result in results:
@@ -96,10 +97,29 @@ if __name__ == '__main__':
                             result[key] = re.sub(' +',' ',val.lower().strip())
 
                     # add the route to the list
-                    monroe.append(result)
+                    monroehigh.append(result)
 
-    with open("../data/monroe_raw.json","w") as f:
-        f.write(json.dumps(monroe))
+                elif result['traffic_volume'] > 25000 and result['traffic_volume'] < 50000:
+
+                    # to cover the SAME ID IN THE DATA SET MORE THAN ONCE OMG
+                    if result['rc_id'] in ids:
+                        continue
+                    else:
+                        ids.append(result['rc_id'])
+
+                     # clean up our data so it is easy to read
+                    for key,val in result.iteritems():
+                        if type(val) != type(int(0)):
+                            result[key] = re.sub(' +',' ',val.lower().strip())
+
+                    # add the route to the list
+                    monroelow.append(result)
+
+    #with open("../data/monroe_raw.json","w") as f:
+    #    f.write(json.dumps(monroe))
+
+    print "50,000+ = {0}".format(len(monroehigh))
+    print "25,000 - 49,999 = {0}".format(len(monroelow))
 
     print "File Processed Successfully."
 
