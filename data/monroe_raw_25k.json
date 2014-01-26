@@ -964,19 +964,5 @@
         "traffic_year": "2010",
         "rc_id": "43_7065",
         "begin_mile_point": "0.34"
-    },
-    {
-        "end_mile_point": "0.19",
-        "traffic_volume": 25639,
-        "name": "main st n",
-        "functional_class": "7",
-        "giscode": "14909001",
-        "end_description": "village line",
-        "begin_description": "gorham st",
-        "muncipality": "village of rushville",
-        "roadwaytype": "road",
-        "traffic_year": "2009",
-        "rc_id": "44_1235",
-        "begin_mile_point": "0"
     }
 ]
