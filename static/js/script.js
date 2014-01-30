@@ -7,8 +7,11 @@ var map_container = document.getElementById('map-canvas'),
 var geojson;
 var popup = L.popup();
 
+var lineWeight = 20;
+
 $(document).ready(function () {
-    handleRoutes();
+    //handleRoutes();
+
     $('#go-back').hide();
     var main = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data © OpenStreetMap contributors',
@@ -26,25 +29,317 @@ $(document).ready(function () {
          ]
     });
 
+
     new L.Control.GeoSearch({
         provider: new L.GeoSearch.Provider.Esri(),
         showMarker: true
     }).addTo(map)
     
-    displayCounties();
+    //displayCounties();
+
+    //map.on('click', onClick);
+
+    //$('#modal').modal('show');
+
+    //loadCounties();
+
+    var school_url = "static/data/schools/monroe_county.json"
+    $.getJSON(school_url, function (data) {
+        loadSchools(data, '');
+    });
+
+
+    loadDebugData();
 
     map.on('click', onClick);
 
-    $('#modal').modal('show');
+    //map.bringToFront();
 
 });
+
+//
+// DEBUG FUNCTIONS
+//
+
+var lastClick = "";
+
+var routes = []
+var routeIndex = -1;
+var points = [];
+var existingPoints = [];
+
+var debugData = {};
+
+function loadDebugData() {
+
+    $.getJSON('static/data/monroe_raw_25k.json', function (data) {
+
+    routes = data;
+
+    //console.log('here');
+
+    //$('#dialog').empty();
+    //nextRoute();
+
+    });
+
+    $.getJSON('static/data/monroe_point_list_25k.json', function (data) {
+
+        //existingPoints = data;
+
+        console.log('loading 25k-50k points');
+
+        for(var i=0; i<data.length; i++) {
+            var line = [];
+            for( var j=0; j<data[i].points.length; j++ ) {
+                var lat = parseFloat(data[i].points[j].split(',')[0].trim());
+                var lng = parseFloat(data[i].points[j].split(',')[1].trim());
+                //console.log('lat: ' + lat + ', lng: ' + lng);
+                var c = new L.latLng(lat, lng);
+                line.push(c);
+            }
+
+            //console.log(line);
+
+            var path = new L.multiPolyline([line], {color: 'purple', weight: lineWeight}).addTo(map);
+            var html = "<div>";
+            html += "<b>RC ID:</b> " + data[i].rc_id + "</br>";
+            path.bindPopup(html);
+            path.on({mouseover: highlightFeature25k, mouseout: resetHighlight25k});
+
+            //console.log(path);
+
+        }
+
+        console.log('50k+ points loaded successfully.');
+
+    });
+
+    $.getJSON('static/data/monroe_point_list_50k.json', function (data) {
+
+    //existingPoints = data;
+
+        console.log('loading 50k+ points');
+
+        for(var i=0; i<data.length; i++) {
+            var line = [];
+            for( var j=0; j<data[i].points.length; j++ ) {
+                var lat = parseFloat(data[i].points[j].split(',')[0].trim());
+                var lng = parseFloat(data[i].points[j].split(',')[1].trim());
+                //console.log('lat: ' + lat + ', lng: ' + lng);
+                var c = new L.latLng(lat, lng);
+                line.push(c);
+            }
+
+            //console.log(line);
+ 
+            var path = new L.multiPolyline([line], {color: 'red', weight: lineWeight}).addTo(map);
+            var html = "<div>";
+            html += "<b>RC ID:</b> " + data[i].rc_id + "</br>";
+            path.bindPopup(html);
+            path.on({mouseover: highlightFeature50k, mouseout: resetHighlight50k});
+
+           //console.log(path);
+  
+        }
+
+    });
+
+}
+
+function nextRoute() {
+
+    // save data
+    if ( routeIndex > -1 ) {
+        routes[routeIndex].points = points;
+        //console.log(routes);
+    }
+    
+    routeIndex++;
+
+    var html = "<div>";
+    html += "<b>RC ID:</b></br> " + routes[routeIndex].rc_id + "</br>";
+    html += "<b>Road:</b></br> " + routes[routeIndex].name + "</br>";
+    html += "<b>Start Desc:</b></br> " + routes[routeIndex].begin_description + "</br>";
+    //html += "<b>Start Location:</b></br> " + routes[routeIndex].begin_loc + "</br>";
+    html += "<b>End Desc:</b></br> " + routes[routeIndex].end_description + "</br>";
+    //html += "<b>End Location:</b></br> " + routes[routeIndex].end_loc + "</br>";
+    html += "</div>";
+
+    //console.log(html);
+
+    $("#routedebug").html(html);
+    $("#dialog").show();
+    $("#routedebug").show();
+   
+    var line = [];
+    for( var i=0; i<points.length; i++ ) {
+        var lat = parseFloat(points[i].split(',')[0].trim());
+        var lng = parseFloat(points[i].split(',')[1].trim());
+        console.log('lat: ' + lat + ', lng: ' + lng);
+        var c = new L.latLng(lat, lng);
+        line.push(c);
+    }   
+    var path = new L.multiPolyline([line], {color: 'purple', weight: 5}).addTo(map);
+    html = "";
+    html += "<b>RC ID:</b> " + routes[routeIndex].rc_id + "</br>";
+    html += "<b>Road:</b> " + routes[routeIndex].name + "</br>";
+    html += "<b>Start Desc:</b> " + routes[routeIndex].begin_description + "</br>";
+    html += "<b>Start Location:</b> " + points[0] + "</br>";
+    html += "<b>End Desc:</b> " + routes[routeIndex].end_description + "</br>";
+    html += "<b>End Location:</b> " + points[points.length-1] + "</br>";
+    html += "</div>";
+    path.bindPopup(html);
+    path.on({mouseover: highlightFeature, mouseout: resetHighlight});
+
+    clearPoints();
+
+    
+
+}
 
 function onClick(e){    
     popup
     .setLatLng(e.latlng)
     .setContent(e.latlng.toString())
     .openOn(map);
+
+    var latlng = e.latlng.toString().replace('LatLng(','').replace(')','');
+    points.push(latlng);
+
+    //routes[routeIndex].points = points;
+
+    //displayPoints();
+
+    //var 
+
+    var LATFC = 364637;
+    var LNGFC = 250000;
+
+    if ( lastClick != "" ) {
+
+        //
+        // modified from here: http://andrew.hedges.name/experiments/haversine/
+        //
+
+        var t1 = parseFloat(latlng.split(',')[0].trim());
+        var n1 = parseFloat(latlng.split(',')[1].trim());
+
+        var t2 = parseFloat(lastClick.split(',')[0].trim());
+        var n2 = parseFloat(lastClick.split(',')[1].trim());
+
+	/*
+
+        var dlat = lat2 - lat1; 
+        var dlon = lon2 - lon1;
+
+        R = 
+        var a = Math.pow(Math.sin(dlat/2),2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon/2),2);
+        var c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
+        var d = R * c;
+
+        //var d = Math.sqrt(Math.pow(clat-llat,2) + Math.pow(clng-llng,2));
+
+	*/
+
+	d = findDistance(t1,n1,t2,n2);
+
+        console.log( "distance: " + d );
+
+    }
+
+    lastClick = latlng
+
 }
+
+	//
+	// taken from: http://andrew.hedges.name/experiments/haversine/
+	//
+
+	/* main function */
+	function findDistance(t1,n1,t2,n2) {
+
+		var Rm = 3961; // mean radius of the earth (miles) at 39 degrees from the equator
+		var Rk = 6373; // mean radius of the earth (km) at 39 degrees from the equator
+
+		var t1, n1, t2, n2, lat1,lon1,lat2,lon2, dlat, dlon, a, c, dm, dk, mi, km, dist;
+		
+		// get values for lat1, lon1, lat2, and lon2
+		//t1 = frm.lat1.value;
+		//n1 = frm.lon1.value;
+		//t2 = frm.lat2.value;
+		//n2 = frm.lon2.value;
+		
+		// convert coordinates to radians
+		lat1 = deg2rad(t1);
+		lon1 = deg2rad(n1);
+		lat2 = deg2rad(t2);
+		lon2 = deg2rad(n2);
+		
+		// find the differences between the coordinates
+		dlat = lat2 - lat1;
+		dlon = lon2 - lon1;
+		
+		// here's the heavy lifting
+		a  = Math.pow(Math.sin(dlat/2),2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon/2),2);
+		c  = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); // great circle distance in radians
+		dm = c * Rm; // great circle distance in miles
+		dk = c * Rk; // great circle distance in km
+		
+		// round the results down to the nearest 1/1000
+		mi = round(dm);
+		km = round(dk);
+		
+		// display the result
+		dist = mi * 5280;
+		//frm.km.value = km;
+
+		return dist;
+	}
+	
+	
+	// convert degrees to radians
+	function deg2rad(deg) {
+		rad = deg * Math.PI/180; // radians = degrees * pi/180
+		return rad;
+	}
+	
+	
+	// round to the nearest 1/1000
+	function round(x) {
+		return Math.round( x * 1000) / 1000;
+	}
+
+function displayPoints() {
+    if ( points.length == 0 ) {
+        $('#routepoints').empty();
+    }
+    else {
+        for(var j=0; j<routes.length; j++) {
+            //if ( routes[j].points != undefined ) {
+                var html = '{"rc_id": "' + routes[j].rc_id + '","points": [</br>';
+                if ( points.length > 1 ) {
+                    for(var i=0; i<points.length-1; i++) {
+                        html += '"' + routes[j].points[i] + '",</br>';
+                    }
+                }
+                html += '"' + points[points.length-1] + '"</br>';
+                html += ']},</br>';
+                $("#routepoints").html(html);
+            //}
+        }
+    }
+}
+
+function clearPoints() {
+    points = [];
+    displayPoints();
+} 
+
+//
+// END DEBUG FUNCTIONS
+//
+
 
 function displayCounties() {
     for(var town in current_towns._layers) {
@@ -59,6 +354,7 @@ function loadCounties() {
         map.panTo([43.12504316740127, -77.740380859375]);
         map.setZoom(11);
     }, 800);
+    
     if (old_counties.length != 0) {
         for(var county in old_counties) {
             map.addLayer(old_counties[county]);
@@ -68,46 +364,66 @@ function loadCounties() {
             map.removeLayer(town_schools[marker]);
         }
     } else {
+    
         $.getJSON('static/data/nys_counties.json', function (data) {
+	
             L.geoJson(data, {
                 style: function (feature) {
                     return {fillColor: 'blue', color: 'white', opacity: 1, fillOpacity: 0.4};
                 },
                 onEachFeature: function (feature, layer) {
-                    counties.addLayer(layer);
+                    //counties.addLayer(layer);
                     map.setZoom(10);
 
                     var name = feature.properties.NAMELSAD.toLowerCase().trim().replace(/\s/g,'_').replace('.', '');
                     var county_url = 'static/data/counties/' + name + "_towns.json",
                         school_url = 'static/data/schools/'  + name + ".json";
                     $.getJSON(county_url, function (data) {
-                        loadTowns(data, layer);
+                        //loadTowns(data, layer);
                     });
                     $.getJSON(school_url, function (data) {
                         loadSchools(data, layer);
                     });
                     layer.on('mouseover', function (event) {
-                        layer.setStyle({ fillColor: 'red' });
-                        $('#title').text('Traffairious - ' + feature.properties.NAMELSAD);
+                        //layer.setStyle({ fillColor: 'red' });
+                        //$('#title').text('Traffairious - ' + feature.properties.NAMELSAD);
                     });
                     layer.on('mouseout', function (event) {
-                        layer.setStyle({ fillColor: 'blue' });
+                        //layer.setStyle({ fillColor: 'blue' });
                     });
                 },
             }).addTo(map);
         });
+	
     }
 }
 
 function loadSchools(schools, layer) {
-	layer.setStyle({ fillColor: 'blue' });
+
+    var cleanIcon = L.icon({
+        iconUrl: 'static/img/marker-icon-blue.png',
+        iconSize: [22, 27]
+    });
+
+    var dirtyIcon = L.icon({
+        iconUrl: 'static/img/marker-icon-yellow.png',
+        iconSize: [22, 27]
+    });
+
+    //layer.setStyle({ fillColor: 'blue' });
     schools.forEach(function (school) {
-        school_marker = L.marker([school.GDTLAT, school.GDTLONG]).addTo(map);
-        school_marker.info = school;
+        if ( school['close'] == undefined ) {
+            school_marker = L.marker([school.GDTLAT, school.GDTLONG],{icon: cleanIcon}).addTo(map);
+        }
+        else {
+            school_marker = L.marker([school.GDTLAT, school.GDTLONG],{icon: dirtyIcon}).addTo(map);
+        }
+	school_marker.info = school;
         school_marker.on('click', function (event) {
             var info = event.target.info;
             console.log(info);
             $('#dialog').empty();
+            $('#dialog').append('ID: ' + info.id + '</br>');
             $('#dialog').append('<h3>' + info.NAME.toCamelCase() + '</h3>');
             $('#dialog').append('<h4>' + info.agency_name_public_school_2010_11.toCamelCase() + '</h3></hr>');
             $('#dialog').append('<h5>Address</h5>');
@@ -163,43 +479,61 @@ function loadTowns (data, county) {
 
     L.geoJson(data, {
         style: function (feature) {
-            return {color: 'blue', opacity: .1, fillOpacity: 0};
+            return {color: 'blue', opacity: .18, fillOpacity: 0};
         },
         onEachFeature: function (feature, layer) {
+            layer.on('click',onClick);
             current_towns.addLayer(layer);
         },
     }).addTo(map);
 }
 
-function highlightFeature(e) {
+function highlightFeature50k(e) {
     var layer = e.target;
 
     layer.setStyle({
-        weight: 5,
-        color: '#00FF00',
+        weight: lineWeight,
+        color: 'green',
         dashArray: '',
         fillOpacity: 0.7
     });
-
-    //if (!L.Browser.ie && !L.Browser.opera) {
-    //    layer.bringToFront();
-    //}
 }
 
-function resetHighlight(e) {
+function resetHighlight50k(e) {
 
     var layer = e.target;
 
     layer.setStyle({
-        weight: 5,
-        color: '#FF0000',
+        weight: lineWeight,
+        color: 'red',
         dashArray: '',
         fillOpacity: 0.7
     });
-
-    //console.log(Object.getOwnPropertyNames(e.target));
-    //geojson.resetStyle(e.target);
 }
+
+function highlightFeature25k(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: lineWeight,
+        color: 'green',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+
+function resetHighlight25k(e) {
+
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: lineWeight,
+        color: 'purple',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+
 
 function displayMonroe() {
 
@@ -237,7 +571,7 @@ function displayMonroe() {
                     //console.log('result:');
                     //console.log(result);
                     //window.a = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
-                    var path = new L.multiPolyline([result], {color: 'red', weight: 8}).addTo(map);
+                    var path = new L.multiPolyline([result], {color: 'red', weight: 5}).addTo(map);
                     var html = "<div>";
                     html += "<b>RC ID:</b> " + data[j].rc_id + "</br>";
                     html += "<b>Road:</b> " + data[j].name + "</br>";
@@ -247,7 +581,7 @@ function displayMonroe() {
                     html += "<b>End Location:</b> " + data[j].end_loc + "</br>";
                     html += "</div>";
                     path.bindPopup(html);
-                    path.on({mouseover: highlightFeature, mouseout: resetHighlight});
+                    path.on({mouseover: highlightFeature50k, mouseout: resetHighlight50k});
                 }
                 else {
                     console.log('item #' + i + ' was undefined ... skipping.');

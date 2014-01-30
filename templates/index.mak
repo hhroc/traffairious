@@ -1,7 +1,10 @@
 <%inherit file="master.mak" />
 <div class="col-md-10" id="map-canvas"></div>
 <div id="dialog" class="col-md-2">
-	<div title="title"></br><center><b>Click a school icon on the map to display information about it.</b></center></div>
+	<div title="title"></br><center><b>Click a school icon on the map to display information about it.</b></center></div></br>
+        <div id="routedebug"></div></br>
+        <button id="nextroute" onclick="nextRoute()">Next</button>
+        </br></br><div id="routepoints"></div></br></br>
     <!--<button id="go-back" onclick="displayCounties()">Back</button>-->
 </div>
 
