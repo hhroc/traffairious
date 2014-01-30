@@ -39,7 +39,7 @@ $(document).ready(function () {
 
     //map.on('click', onClick);
 
-    //$('#modal').modal('show');
+    $('#modal').modal('show');
 
     //loadCounties();
 
@@ -47,7 +47,6 @@ $(document).ready(function () {
     $.getJSON(school_url, function (data) {
         loadSchools(data, '');
     });
-
 
     loadDebugData();
 
@@ -104,6 +103,7 @@ function loadDebugData() {
             var path = new L.multiPolyline([line], {color: 'purple', weight: lineWeight}).addTo(map);
             var html = "<div>";
             html += "<b>RC ID:</b> " + data[i].rc_id + "</br>";
+            //html += "<b>Volume: </b> " + data[i].traffic_volume + "</br>";
             path.bindPopup(html);
             path.on({mouseover: highlightFeature25k, mouseout: resetHighlight25k});
 
@@ -111,7 +111,7 @@ function loadDebugData() {
 
         }
 
-        console.log('50k+ points loaded successfully.');
+        console.log('25k+ points loaded successfully.');
 
     });
 
@@ -136,6 +136,7 @@ function loadDebugData() {
             var path = new L.multiPolyline([line], {color: 'red', weight: lineWeight}).addTo(map);
             var html = "<div>";
             html += "<b>RC ID:</b> " + data[i].rc_id + "</br>";
+            //html += "<b>Volume: </b> " + data[i].traffic_volume + "</br>";
             path.bindPopup(html);
             path.on({mouseover: highlightFeature50k, mouseout: resetHighlight50k});
 

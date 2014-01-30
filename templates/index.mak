@@ -15,11 +15,37 @@
                 <h3 class="modal-title" id="myModalLabel"><center>Traffairious</center></h3>
             </div>
             <div class="modal-body">
+                
                 <p class="lead">
-                    Phasellus sed tincidunt tortor. Pellentesque nec enim ante. Vivamus ut enim placerat, rhoncus libero eu, accumsan metus. Aliquam rutrum venenatis urna, tincidunt commodo dolor malesuada nec. Suspendisse elementum faucibus mollis. Donec laoreet ante non libero convallis, vel fringilla felis iaculis. Sed pharetra, odio vulputate placerat semper, turpis est sollicitudin nibh, id iaculis felis massa auctor turpis. 
+
+                    This website privides a visual means to see the proximity of schools within Monroe County, NY to high traffic road ways.  This website was put together by members of <a href="http://www.meetup.com/HackshackersROC/">Hacks/Hackers Rochester</a> in colaboration with <a href="http://www.wxxi.org/">WXXI</a> and <a href="http://innovationtrail.org/">Innovation Trail</a>.
+
                 </p>
                 <p class="lead">
-                	Cras at ornare metus. Nullam luctus vel neque vel facilisis. Praesent porta ligula sit amet ipsum congue varius. Nam sed tincidunt tellus, sit amet faucibus nibh. Curabitur eu enim sit amet libero dictum facilisis vitae vitae enim. Vivamus odio lacus, malesuada vitae risus a, rutrum tincidunt nulla. Nullam vel mattis ligula, tincidunt tempor eros. Donec porta imperdiet velit et egestas. Morbi vitae hendrerit diam, in auctor est. Etiam at lectus tincidunt metus fermentum rutrum non nec sapien.
+                    The map has one it markers to represent schools, and colored lines to represent high traffic roadways.
+
+                    <div style="border: 2px solid purple; background-color: purple; width: 40px; height: 20px;border-radius: 10px;float: left;"></div>
+                    <div style="margin-left: 50px;">Roadway with 25,000 - 49,999 cars per day.</div>
+
+                    </br></br>
+                    
+                    <div style="border: 2px solid red; background-color: red; 20px; width: 40px; height: 20px;border-radius: 10px; float: left;"></div>
+                    <div style="margin-left: 50px;">Roadway with 50,000 or more cars per day.</div>
+
+                    </br></br>
+
+                    <img src="static/img/marker-icon-yellow.png"></img>
+                    A school that is within 1000 feet of a 50,000+ cars/day roadway.
+                    
+                    </br></br>
+
+                    <img src="static/img/marker-icon-blue.png"></img>
+                    A school that is <b>not</b> within 1000 feet of a 50,000+ cars/day roadway.
+
+                </p>
+
+                <p class="lead">
+                    If you would like to see the code and data for this website, you can head to <a href="https://github.com/hhroc/traffairious">Github.com</a>.  If you would like to learn more about how this site was built, the data that it is using, and Hacks/Hackers Rochester, checkout the <a href="about">about</a> page.
                 </p>
             </div>
             <div class="modal-footer">
