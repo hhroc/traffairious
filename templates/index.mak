@@ -2,9 +2,9 @@
 <div class="col-md-10" id="map-canvas"></div>
 <div id="dialog" class="col-md-2">
 	<div title="title"></br><center><b>Click a school icon on the map to display information about it.</b></center></div></br>
-        <div id="routedebug"></div></br>
+        <!--<div id="routedebug"></div></br>
         <button id="nextroute" onclick="nextRoute()">Next</button>
-        </br></br><div id="routepoints"></div></br></br>
+        </br></br><div id="routepoints"></div></br></br>-->
     <!--<button id="go-back" onclick="displayCounties()">Back</button>-->
 </div>
 
@@ -18,21 +18,21 @@
                 
                 <p class="lead">
 
-                    This website privides a visual means to see the proximity of schools within Monroe County, NY to high traffic road ways.  This website was put together by members of <a href="http://www.meetup.com/HackshackersROC/">Hacks/Hackers Rochester</a> in colaboration with <a href="http://www.wxxi.org/">WXXI</a> and <a href="http://innovationtrail.org/">Innovation Trail</a>.
+                    This website provides a visual means to see the proximity of schools within Monroe County, NY to high traffic road ways.  This website was put together by members of <a href="http://www.meetup.com/HackshackersROC/">Hacks/Hackers Rochester</a> in collaboration  with <a href="http://www.wxxi.org/">WXXI</a> and <a href="http://innovationtrail.org/">Innovation Trail</a>.
 
                 </p>
                 <p class="lead">
-                    The map has one it markers to represent schools, and colored lines to represent high traffic roadways.
+                    The map has markers to represent schools, and colored lines to represent high traffic roadways.
 
                     <div style="border: 2px solid purple; background-color: purple; width: 40px; height: 20px;border-radius: 10px;float: left;"></div>
                     <div style="margin-left: 50px;">Roadway with 25,000 - 49,999 cars per day.</div>
 
-                    </br></br>
+                    </br>
                     
                     <div style="border: 2px solid red; background-color: red; 20px; width: 40px; height: 20px;border-radius: 10px; float: left;"></div>
                     <div style="margin-left: 50px;">Roadway with 50,000 or more cars per day.</div>
 
-                    </br></br>
+                    </br>
 
                     <img src="static/img/marker-icon-yellow.png"></img>
                     A school that is within 1000 feet of a 50,000+ cars/day roadway.
