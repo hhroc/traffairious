@@ -50,7 +50,7 @@ $(document).ready(function () {
 
     loadDebugData();
 
-    map.on('click', onClick);
+    //map.on('click', onClick);
 
     //map.bringToFront();
 
