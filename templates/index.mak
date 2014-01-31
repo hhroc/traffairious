@@ -24,13 +24,13 @@
                 <p class="lead">
                     The map has markers to represent schools, and colored lines to represent high traffic roadways.
 
-                    <div style="border: 2px solid purple; background-color: purple; width: 40px; height: 20px;border-radius: 10px;float: left;"></div>
-                    <div style="margin-left: 50px;">Roadway with 25,000 - 49,999 cars per day.</div>
+					<div class="roadway-marker roadway-marker-purple"></div>
+                    <div class="roadway-marker-caption">Roadway with 25,000 - 49,999 cars per day.</div>
 
                     </br>
                     
-                    <div style="border: 2px solid red; background-color: red; 20px; width: 40px; height: 20px;border-radius: 10px; float: left;"></div>
-                    <div style="margin-left: 50px;">Roadway with 50,000 or more cars per day.</div>
+                    <div class="roadway-marker roadway-marker-red"></div>
+                    <div class="roadway-marker-caption">Roadway with 50,000 or more cars per day.</div>
 
                     </br>
 

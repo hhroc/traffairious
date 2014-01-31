@@ -102,3 +102,31 @@ h1,h2,h3,h4,h5,h6 {
 	overflow-y: scroll;
 }
 
+.roadway-marker {
+
+    border: 2px solid;
+    width: 40px;
+    height: 20px;
+    border-radius: 10px;
+    float: left;
+
+}
+
+.roadway-marker-red {
+
+    border-color: red;
+    background-color: red;
+}
+
+.roadway-marker-purple {
+
+    border-color: purple;
+    background-color: purple;
+
+}
+
+.roadway-marker-caption {
+
+    margin-left: 50px;
+
+}
