@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     L.control.scale({
         position: 'bottomright',
-        metric: false,
+        metric: true,
         imperial: true
     }).addTo(map);
 
