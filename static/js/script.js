@@ -9,6 +9,15 @@ var popup = L.popup();
 
 var lineWeight = 20;
 
+
+//
+//  Taken from:
+//    http://stackoverflow.com/a/2901298
+//
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 $(document).ready(function () {
     //handleRoutes();
 
@@ -48,7 +57,7 @@ $(document).ready(function () {
         loadSchools(data, '');
     });
 
-    loadDebugData();
+    loadRouteData();
 
     //map.on('click', onClick);
 
@@ -69,20 +78,20 @@ var existingPoints = [];
 
 var debugData = {};
 
-function loadDebugData() {
+function loadRouteData() {
 
-    $.getJSON('static/data/monroe_raw_25k.json', function (data) {
+    //$.getJSON('static/data/monroe_raw_25k.json', function (data) {
 
-    routes = data;
+    //routes = data;
 
     //console.log('here');
 
     //$('#dialog').empty();
     //nextRoute();
 
-    });
+    //});
 
-    $.getJSON('static/data/monroe_point_list_25k.json', function (data) {
+    $.getJSON('static/data/monroe_point_list_25k_final.json', function (data) {
 
         //existingPoints = data;
 
@@ -98,16 +107,12 @@ function loadDebugData() {
                 line.push(c);
             }
 
-            //console.log(line);
-
             var path = new L.multiPolyline([line], {color: 'purple', weight: lineWeight}).addTo(map);
             var html = "<div>";
-            html += "<b>RC ID:</b> " + data[i].rc_id + "</br>";
-            //html += "<b>Volume: </b> " + data[i].traffic_volume + "</br>";
+            html += "<b>ID:</b> " + data[i].rc_id + "</br>";
+            html += "<b>Volume: </b> " + numberWithCommas(data[i].volume) + " cars/day</br>";
             path.bindPopup(html);
             path.on({mouseover: highlightFeature25k, mouseout: resetHighlight25k});
-
-            //console.log(path);
 
         }
 
@@ -115,7 +120,7 @@ function loadDebugData() {
 
     });
 
-    $.getJSON('static/data/monroe_point_list_50k.json', function (data) {
+    $.getJSON('static/data/monroe_point_list_50k_final.json', function (data) {
 
     //existingPoints = data;
 
@@ -135,8 +140,8 @@ function loadDebugData() {
  
             var path = new L.multiPolyline([line], {color: 'red', weight: lineWeight}).addTo(map);
             var html = "<div>";
-            html += "<b>RC ID:</b> " + data[i].rc_id + "</br>";
-            //html += "<b>Volume: </b> " + data[i].traffic_volume + "</br>";
+            html += "<b>ID:</b> " + data[i].id + "</br>";
+            html += "<b>Volume: </b> " + numberWithCommas(data[i].volume) + " cars/day</br>";
             path.bindPopup(html);
             path.on({mouseover: highlightFeature50k, mouseout: resetHighlight50k});
 
@@ -148,6 +153,7 @@ function loadDebugData() {
 
 }
 
+/*
 function nextRoute() {
 
     // save data
@@ -198,6 +204,7 @@ function nextRoute() {
     
 
 }
+*/
 
 function onClick(e){    
     popup
@@ -413,18 +420,22 @@ function loadSchools(schools, layer) {
 
     //layer.setStyle({ fillColor: 'blue' });
     schools.forEach(function (school) {
+        var close = false;
         if ( school['close'] == undefined ) {
             school_marker = L.marker([school.GDTLAT, school.GDTLONG],{icon: cleanIcon}).addTo(map);
         }
         else {
             school_marker = L.marker([school.GDTLAT, school.GDTLONG],{icon: dirtyIcon}).addTo(map);
+            close = true;
         }
 	school_marker.info = school;
         school_marker.on('click', function (event) {
             var info = event.target.info;
             console.log(info);
             $('#dialog').empty();
-            $('#dialog').append('ID: ' + info.id + '</br>');
+            //$('#dialog').append('ID: ' + info.id + '</br>');
+            if( close == true )
+                $('#dialog').append("<h4 style=\"color: red;\">This School's address is within 1000 feet of a roadway with over 50,000 cars/day<h4>");
             $('#dialog').append('<h3>' + info.NAME.toCamelCase() + '</h3>');
             $('#dialog').append('<h4>' + info.agency_name_public_school_2010_11.toCamelCase() + '</h3></hr>');
             $('#dialog').append('<h5>Address</h5>');
