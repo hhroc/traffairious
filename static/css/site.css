@@ -130,3 +130,9 @@ h1,h2,h3,h4,h5,h6 {
     margin-left: 50px;
 
 }
+
+.personlink {
+    margin-left: 25px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
