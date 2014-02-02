@@ -1,8 +1,11 @@
 <%inherit file="master.mak"/>
 
-<div class="row" style="font-size: 21px;">
+<div style="width: 800px; margin: auto;">
+
+<!--<div class="row" style="font-size: 21px;">
   <div class="col-md-4">
     <div style="padding-left: 10px;">
+-->
 
       <h2>Methodologies</h2>
       <p>
@@ -32,42 +35,45 @@
       The site is built using <a href="http://leafletjs.com/">leafletjs</a>, <a href="http://getbootstrap.com/">twitter bootstrap</a>, <a href="http://flask.pocoo.org/">flask</a>, and <a href="http://www.makotemplates.org/">Mako</a>.  The Traffairious website sits on the Redhat <a href="https://www.openshift.com/">Open Shift</a> cloud.
       </p>
 
-
+<!--
     </div>
   </div>
 
   <div class="col-md-4">
- 
+-->
     <h2>Studdies and Research</h2>
     
     <p>
     There have been a number of studies done on the effects of health and the output of motor vehicles.
     </p>
 
-    <h3>Not in My Schoolyard:</h3>
+    <h4>Not in My Schoolyard:</h4>
+
     <p style="padding-left: 10px;">
     2006 report prepared for the US EPA by Rhode Island Legal Services. Includes state-by-state look at regulations regarding schools sitting near transportation lines (including roads and railroads), starting p. 58.  The paper can be found <a href="http://www.nylpi.org/images/FE/chain234siteType8/site203/client/EJ%20-%20Not%20in%20My%20Schoolyard%20-%20Improving%20Site%20Selection%20Process.pdf"><b>Here</b></a>.
     </p>
 
-    <h3>National survey of school proximity to roadways (Appatova et al., 2008)</h3>
+    <h4>National survey of school proximity to roadways (Appatova et al., 2008)</h4>
     <p style="padding-left: 10px;">
     A national look by the University of Cincinnati on the number of schools within 100m and 400m of highways. Includes citations to numerous studies about health effects of traffic pollution.  The paper can be found <a href="http://ccaaps.uc.edu/webpage/Publications/Appatova%20-%20Proximal%20exposure%20of%20public%20schools%20and%20students.pdf"><b>Here</b></a>.
     </p>
 
-    <h3>Traffic pollution effects on school children</h3>
+    <h4>Traffic pollution effects on school children</h4>
     1993 German study establishing correlation between traffic exhaust and respiratory issues in children can be found <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1678953/"><b>Here</b></a>.
 
-    <h3>San Francisco schoolchildren study</h3>
+    <h4>San Francisco schoolchildren study</h4>
     <p style="padding-left: 10px;">
 2001 study by the California EPA on health effects of traffic pollution on children in San Francisco schools. This study helped support the passage of the California law requiring 500-foot setback from busy highways.  The study can be found <a href="http://www.arb.ca.gov/research/eb-kids/eb-kids.htm"><b>Here</b></a>.
     </p>
 
-    <h3>Air pollution and early deaths in the United States (Caiazzo et al., 2013)</h3>
+    <h4>Air pollution and early deaths in the United States (Caiazzo et al., 2013)</h4>
     <p style="padding-left: 10px;">
     New study using 2005 data finding total combustion emissions in the U.S. account for about 200,000 premature deaths per year in the U.S. The largest contributors are road transportation. Disaggregates data by state and major metros.  The study can be found <a href="https://www.documentcloud.org/documents/782206-barrett-2013.html"><b>Here</b></a>.
 
+<!--
   </div>
   <div class="col-md-4">
+-->
 
     <h2>Hacks/Hackers Rochester and Getting Involved</h2>
 
@@ -102,8 +108,11 @@ CONDITIONS OF ANY KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations under the License.
     </p>
 
-
+<!--
   </div>
+
+</div>
+-->
 
 </div>
 
