@@ -82,7 +82,7 @@
     <h2>Disclaimer and License</h2>
 
     <p>
-    
+    Proximity of schools to high-traffic roadways was in reference to the latitude/longitude of the school''s address provided by the NYS Department of Education via the VADIR data set.  There is no guarantee that any part of the school, or the land it sits on, is within 1000 feet of a high-traffic roadway.
     </p>
 
     <p>
@@ -90,7 +90,7 @@
     </p>
 
     <p>
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    This software is Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License.  You may obtain a copy of the
 License <a href="http://www.apache.org/licenses/LICENSE-2.0">here</a>.
     </p>
