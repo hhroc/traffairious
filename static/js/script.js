@@ -38,6 +38,11 @@ $(document).ready(function () {
          ]
     });
 
+    L.control.scale({
+        position: 'bottomright',
+        metric: false,
+        imperial: true
+    }).addTo(map);
 
     new L.Control.GeoSearch({
         provider: new L.GeoSearch.Provider.Esri(),
