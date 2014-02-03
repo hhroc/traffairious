@@ -85,11 +85,13 @@
     If you would like to be a part of future Hacks/Hackers Rochester projects, learn more about current projects, or be a part of future work, feel free to stop by our next meetup.  Our meetup schedule can be found <a href="http://www.meetup.com/HackshackersROC/">here</a>.
     </p>
 
-    <h2>Disclaimer and License</h2>
+    <h2>Disclaimer</h2>
 
     <p>
-    Proximity of schools to high-traffic roadways was in reference to the latitude/longitude of the school''s address provided by the NYS Department of Education via the VADIR data set.  There is no guarantee that any part of the school, or the land it sits on, is within 1000 feet of a high-traffic roadway.
+    Proximity of schools to high-traffic roadways was in reference to the latitude/longitude of the school''s address provided by the NYS Department of Education via the VADIR data set.  There is no guarantee that any part of the school, or the land it sits on, is within 1000 feet of a high-traffic roadway.  There is no guarantee that the data sets gathered from NYS are accurate.
     </p>
+
+    <h2>License</h2>
 
     <p>
     Copyright 2013 Hacks/HackersROC
