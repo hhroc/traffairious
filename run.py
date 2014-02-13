@@ -40,6 +40,9 @@ def story():
 def slides():
     return redirect(url_for('static', filename='img/preso.svg'))
 
+#@app.route('/embed/embed.html')
+#def embed():
+#    return render_template('embed/embed.html')
 
 if __name__ == "__main__":
     if 'OPENSHIFT_PYTHON_IP' in os.environ:
