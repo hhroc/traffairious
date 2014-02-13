@@ -125,7 +125,7 @@ function loadRouteData() {
 
             var path = new L.multiPolyline([line], {color: 'purple', weight: lineWeight}).addTo(map);
             var html = "<div>";
-            html += "<b>ID:</b> " + data[i].rc_id + "</br>";
+            //html += "<b>ID:</b> " + data[i].rc_id + "</br>";
             html += "<b>Volume: </b> " + numberWithCommas(data[i].volume) + " cars/day</br>";
             path.bindPopup(html);
             path.on({mouseover: highlightFeature25k, mouseout: resetHighlight25k});
@@ -156,7 +156,7 @@ function loadRouteData() {
 
             var path = new L.multiPolyline([line], {color: 'red', weight: lineWeight}).addTo(map);
             var html = "<div>";
-            html += "<b>ID:</b> " + data[i].id + "</br>";
+            //html += "<b>ID:</b> " + data[i].id + "</br>";
             html += "<b>Volume: </b> " + numberWithCommas(data[i].volume) + " cars/day</br>";
             path.bindPopup(html);
             path.on({mouseover: highlightFeature50k, mouseout: resetHighlight50k});
