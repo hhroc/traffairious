@@ -1,0 +1,309 @@
+<html>
+<head>
+
+    <style>
+
+    * {
+    }
+
+    body {
+    }
+
+    #top-div {
+        width: 750px;
+        height: 300px;
+        border: 1px solid #000000;
+        padding: 2px 2px 2px 2px;
+    }
+
+    #map-canvas {
+        height: 100%;
+        width: 75%;
+        float: left;
+    }
+
+    #dialog {
+        height: 100%;
+        width: 24%;
+        float: left;
+        padding-left: 2px;
+        overflow: auto;
+        padding: 2px 2px 2px 2px;
+    }
+
+    </style>
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="html5shiv.js"></script>
+    <![endif]-->
+
+    <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+    <script>
+
+        var map_container = document.getElementById('map-canvas');
+        var counties = null;
+        var current_towns = null;
+        var old_counties = [];
+        var town_schools = [];
+
+        var lineWeight = 20;
+
+        //
+        //  Taken from:
+        //    http://stackoverflow.com/a/2901298
+        //
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        String.prototype.toCamelCase = function () {
+            return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        };
+
+
+        $(document).ready(function() {
+
+            var main = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data © OpenStreetMap contributors',
+                minZoom: 10,
+                maxZoom: 16,
+            });
+            var counties = L.layerGroup();
+            var current_towns = L.layerGroup();
+
+            window.map = L.map('map-canvas', {
+                center: [43.16412, -77.60124], //[42.6501, -76.3659],
+                zoom: 12,
+                layers: [
+                    main
+                ]
+            });
+
+            L.control.scale({
+                position: 'bottomright',
+                metric: true,
+               imperial: true
+            }).addTo(map);
+
+            /*
+            new L.Control.GeoSearch({
+                provider: new L.GeoSearch.Provider.Esri(),
+                showMarker: true
+            }).addTo(map)
+            */
+
+            var school_url = "monroe_county.json"
+            $.getJSON(school_url, function (data) {
+                loadSchools(data, '');
+            });
+
+            loadRouteData();
+
+        });
+
+function loadRouteData() {
+
+    $.getJSON('monroe_point_list_25k_final.json', function (data) {
+
+        //existingPoints = data;
+
+        //console.log('loading 25k-50k points');
+
+        for(var i=0; i<data.length; i++) {
+            var line = [];
+            for( var j=0; j<data[i].points.length; j++ ) {
+                var lat = parseFloat(data[i].points[j].split(',')[0].trim());
+                var lng = parseFloat(data[i].points[j].split(',')[1].trim());
+                //console.log('lat: ' + lat + ', lng: ' + lng);
+                var c = new L.latLng(lat, lng);
+                line.push(c);
+            }
+
+            var path = new L.multiPolyline([line], {color: 'purple', weight: lineWeight}).addTo(map);
+            var html = "<div>";
+            //html += "<b>ID:</b> " + data[i].rc_id + "</br>";
+            html += "<b>Volume: </b> " + numberWithCommas(data[i].volume) + " cars/day</br>";
+            path.bindPopup(html);
+            path.on({mouseover: highlightFeature25k, mouseout: resetHighlight25k});
+
+        }
+
+        //console.log('25k+ points loaded successfully.');
+
+    });
+
+    $.getJSON('monroe_point_list_50k_final.json', function (data) {
+
+    //existingPoints = data;
+
+        //console.log('loading 50k+ points');
+
+        for(var i=0; i<data.length; i++) {
+            var line = [];
+            for( var j=0; j<data[i].points.length; j++ ) {
+                var lat = parseFloat(data[i].points[j].split(',')[0].trim());
+                var lng = parseFloat(data[i].points[j].split(',')[1].trim());
+                //console.log('lat: ' + lat + ', lng: ' + lng);
+                var c = new L.latLng(lat, lng);
+                line.push(c);
+            }
+
+            //console.log(line);
+
+            var path = new L.multiPolyline([line], {color: 'red', weight: lineWeight}).addTo(map);
+            var html = "<div>";
+            //html += "<b>ID:</b> " + data[i].id + "</br>";
+            html += "<b>Volume: </b> " + numberWithCommas(data[i].volume) + " cars/day</br>";
+            path.bindPopup(html);
+            path.on({mouseover: highlightFeature50k, mouseout: resetHighlight50k});
+
+           //console.log(path);
+
+        }
+
+    });
+
+}
+
+
+function loadSchools(schools, layer) {
+
+    var cleanIcon = L.icon({
+        iconUrl: 'marker-icon-blue.png',
+        iconSize: [22, 27]
+    });
+
+    var dirtyIcon = L.icon({
+        iconUrl: 'marker-icon-yellow.png',
+        iconSize: [22, 27]
+    });
+
+    //layer.setStyle({ fillColor: 'blue' });
+    schools.forEach(function (school) {
+        var close = false;
+        if ( school['close'] == undefined ) {
+            school_marker = L.marker([school.GDTLAT, school.GDTLONG],{icon: cleanIcon}).addTo(map);
+        }
+        else {
+            school_marker = L.marker([school.GDTLAT, school.GDTLONG],{icon: dirtyIcon}).addTo(map);
+            close = true;
+        }
+        school_marker.info = school;
+        school_marker.on('click', function (event) {
+            var info = event.target.info;
+            //console.log(info);
+            $('#dialog').empty();
+            //$('#dialog').append('ID: ' + info.id + '</br>');
+            //if( close == true )
+            //    $('#dialog').append("<div style=\"color: red;\"><b>This School's address is within 1000 feet of a roadway with over 50,000 cars/day</b>");
+
+            var schoolName = info.NAME.toCamelCase();
+            var district = info.agency_name_public_school_2010_11.toCamelCase();
+            var address =  info.STREET.toCamelCase() + '</br>' + info.CITY.toCamelCase() + ', ' + info.STATE + ' ' + info.ZIP5;
+            var phoneNumber = String(info['phone_number_public_school_2010_1']).replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+
+            var schoolColor = '#000000';
+            if( close == true ) {
+                schoolColor = '#FF0000';
+            }
+
+            $('#dialog').append('<div style="font-size: 20px; font-weight: bold; margin-bottom: 5px; color: ' + schoolColor + '">' + schoolName + '</div>');
+            $('#dialog').append('<div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">' + district + '</div>');
+            $('#dialog').append('<i>' + address + '</i></br>');
+            $('#dialog').append('<i>' + phoneNumber + '</i></br>');
+            $('#dialog').append('<h5>Enrollment Data</h5>');
+
+            var numbers_table = "<table class='table'>";
+            if (info['number_teachers'] > 0){
+                numbers_table+=('<tr><td width="50%"> Faculty:  </td> <td> ' + info['number_teachers'] + '</td></tr>');
+            }
+            if (info['prek_enroll'] > 0){
+                numbers_table+=('<tr><td> Pre-K:  </td> <td> ' + info['prek_enroll'] + '</td></tr>');
+            }
+            if (info['k_fullday_enroll' > 0]){
+                numbers_table+=('<tr><td> Kindergarten:  </td> <td> ' + (info['k_fullday_enroll'] + info['k_halfday_enroll']) + '</td></tr>');
+            }
+            for (x = 1; x < 13; x++){
+                if (info['grade_' + x + '_enroll'] > 0){
+                    numbers_table+=('<tr><td> Grade ' + x + ': </td> <td> ' + info['grade_' + x + '_enroll'] + '</td></tr>');
+                }
+            }
+            numbers_table+=('</table>');
+            $('#dialog').append(numbers_table);
+
+            //$('#dialog').append('<button class="btn btn-primary" id="go-back" onclick="displayCounties()">Back</button>');
+        });
+        town_schools.push(school_marker);
+    });
+}
+
+function highlightFeature50k(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: lineWeight,
+        color: 'green',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+
+function resetHighlight50k(e) {
+
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: lineWeight,
+        color: 'red',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+
+function highlightFeature25k(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: lineWeight,
+        color: 'green',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+
+function resetHighlight25k(e) {
+
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: lineWeight,
+        color: 'purple',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+
+
+
+    </script>
+
+
+</head>
+<body>
+
+    <div class="top" id="top-div">
+    
+        <div id="map-canvas"></div>
+
+        <div id="dialog">
+            <center><b>Click a school icon on the map to display information about it.</b></center>
+        </div>
+
+    </div>
+
+</body>
+</html>  
